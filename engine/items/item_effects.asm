@@ -100,6 +100,57 @@ ItemUsePtrTable:
 	dw ItemUsePPRestore  ; MAX_ETHER
 	dw ItemUsePPRestore  ; ELIXER
 	dw ItemUsePPRestore  ; MAX_ELIXER
+;CHS_FIX p43
+ReloadPKMNNameWithEnemyHUD: ;
+	coord hl, 0, 0 ;
+	ld b, 4 ;
+	ld c, 11 ;
+	call ClearScreenArea ;
+	; ld de, wEnemyMonNick
+	; hlcoord 0, 1 ; CHS_Fix 02 
+	; call PlaceString
+	; push af
+	; push bc
+	; push de
+	; push hl
+	; farcall DrawEnemyHUDAndHPBar
+	; pop af
+	; pop bc
+	; pop de
+	; pop hl
+ReloadPKMNName: ;CHS_Fix Reloading pokemon name after using a ball
+	; farcall DrawPlayerHUDAndHPBar
+	ld a,[wIfDexSeen]
+	cp 0
+	jr z, .skipReloadingPlayerPKMNName
+	ld a, [wBattleType]
+	cp BATTLE_TYPE_SAFARI
+	jr z, .skipReloadingPlayerPKMNName
+	coord hl, 9, 7 
+	ld b, 2 
+	ld c, 8
+	call ClearScreenArea
+	ld de, wBattleMonNick
+	hlcoord 9, 8 ; CHS_Fix 02 
+	call PlaceString
+	hlcoord $11, 8 ;
+	ld de, wLoadedMonStatus 
+	call PrintStatusConditionNotFainted
+.skipReloadingPlayerPKMNName
+	ret 
+
+; ReloadPlayerPKMNLevel:
+; 	ld a,[wIfDexSeen]
+; 	cp 0
+; 	jr z, .doNotPrintLevel
+; 	ld a, [wBattleType]
+; 	cp BATTLE_TYPE_SAFARI 
+; 	jr z, .doNotPrintLevel
+; 	hlcoord $11, 8 ;
+; 	ld de, wLoadedMonStatus 
+; 	call PrintStatusConditionNotFainted
+; .doNotPrintLevel:
+; 	ret 
 
 ItemUseBall:
 
@@ -145,6 +196,27 @@ ItemUseBall:
 	ld [wPokeBallAnimData], a
 
 	call LoadScreenTilesFromBuffer1
+	ld a, [wBattleType] ;if old man
+	dec a ;
+	jr z, .skipReloadingName ;
+	ld a, [wBattleType] ;
+	cp BATTLE_TYPE_SAFARI ;
+	jr z, .skipReloadingName ;
+	push af
+	push bc
+	push de
+	push hl
+	ld a, 1 ;
+	ld [wIfDexSeen], a ;
+	call ReloadPKMNName ;
+	; call ReloadPlayerPKMNLevel
+	ld a, 0 ;
+	ld [wIfDexSeen], a ;
+	pop af
+	pop bc
+	pop de
+	pop hl
+.skipReloadingName
 	ld hl, ItemUseText00
 	call PrintText
 
@@ -529,7 +601,7 @@ ItemUseBall:
 	cp BATTLE_TYPE_OLD_MAN ; is this the old man battle?
 	jp z, .oldManCaughtMon ; if so, don't give the player the caught Pokémon
 	cp BATTLE_TYPE_PIKACHU
-	jr z, .oldManCaughtMon ; same with Pikachu battle
+	jp z, .oldManCaughtMon ; same with Pikachu battle
 	ld hl, ItemUseBallText05
 	call PrintText
 
@@ -551,6 +623,7 @@ ItemUseBall:
 	pop af
 
 	and a ; was the Pokémon already in the Pokédex?
+	ld [wIfDexSeen],a
 	jr nz, .skipShowingPokedexData ; if so, don't show the Pokédex data
 
 	ld hl, ItemUseBallText06
@@ -579,6 +652,8 @@ ItemUseBall:
 .sendToBox
 	call ClearSprites
 	call SendNewMonToBox
+	call ReloadPKMNNameWithEnemyHUD
+	; call ReloadPlayerPKMNLevel
 	ld hl, ItemUseBallText07
 	CheckEvent EVENT_MET_BILL
 	jr nz, .printTransferredToPCText
@@ -919,6 +994,8 @@ ItemUseMedicine:
 	call GoBackToPartyMenu
 	jr .getPartyMonDataAddress
 .notUsingSoftboiled
+	ld a, 1 ;CHS_FIX 20 for opening party menu using items
+	ld [wIfPartyMenuOpenedDuringBattle], a;
 	call DisplayPartyMenu
 .getPartyMonDataAddress
 	jp c, .canceledItemUse
@@ -1162,7 +1239,8 @@ ItemUseMedicine:
 	sbc b
 	ld [hl], a
 	ld [wHPBarNewHP+1], a
-	hlcoord 4, 1
+	; hlcoord 4, 1
+	hlcoord $D, 1 ; CHS_Fix Recovering HP Bar
 	ld a, [wWhichPokemon]
 	ld bc, 2 * SCREEN_WIDTH
 	call AddNTimes ; calculate coordinates of HP bar of pokemon that used Softboiled
@@ -1173,7 +1251,8 @@ ItemUseMedicine:
 	ldh [hUILayoutFlags], a
 	ld a, $02
 	ld [wHPBarType], a
-	predef UpdateHPBar2 ; animate HP bar decrease of pokemon that used Softboiled
+	; predef UpdateHPBar2 ; animate HP bar decrease of pokemon that used Softboiled
+	predef UpdateShortHPBar ; CHS_Fix recovering HP Bar
 	ldh a, [hUILayoutFlags]
 	res 0, a
 	ldh [hUILayoutFlags], a
@@ -1295,7 +1374,8 @@ ItemUseMedicine:
 	xor a
 	ld [wBattleMonStatus], a ; remove the status ailment in the in-battle pokemon data
 .calculateHPBarCoords
-	ld hl, wShadowOAMSprite36
+	; ld hl, wShadowOAMSprite36
+	hlcoord $D,-1 ; CHS_Fix recovering HP Bar
 	ld bc, 2 * SCREEN_WIDTH
 	inc d
 .calculateHPBarCoordsLoop
@@ -1328,7 +1408,8 @@ ItemUseMedicine:
 	ldh [hUILayoutFlags], a
 	ld a, $02
 	ld [wHPBarType], a
-	predef UpdateHPBar2 ; animate the HP bar lengthening
+	; predef UpdateHPBar2 ; animate the HP bar lengthening
+	predef UpdateShortHPBar ; CHS_Fix recovering HP Bar
 	ldh a, [hUILayoutFlags]
 	res 0, a
 	ldh [hUILayoutFlags], a
@@ -1527,12 +1608,14 @@ ItemUseMedicine:
 	ld [wd11e], a
 	xor a ; PLAYER_PARTY_DATA
 	ld [wMonDataLocation], a
+	call SaveScreenTilesToBuffer1 ; CHS_Fix load tileset patterns before displaying the status screen
 	call LoadMonData
 	ld d, $01
 	callfar PrintStatsBox ; display new stats text box
 	call WaitForTextScrollButtonPress ; wait for button press
 	xor a ; PLAYER_PARTY_DATA
 	ld [wMonDataLocation], a
+	call LoadScreenTilesFromBuffer1 ; CHS_Fix close the status screen by reloading tileset from buffer
 	predef LearnMoveFromLevelUp ; learn level up move, if any
 
 	xor a
@@ -1920,6 +2003,11 @@ ItemUsePokeflute:
 	ld [wWereAnyMonsAsleep], a
 .asm_e063
 	call LoadScreenTilesFromBuffer2 ; restore saved screen
+	ld a, 1 ;
+	ld [wIfDexSeen], a ;
+	call ReloadPKMNName ;CHS_Fix p68
+	ld a, 0 ;
+	ld [wIfDexSeen], a ;
 	ld a, [wWereAnyMonsAsleep]
 	and a ; were any pokemon asleep before playing the flute?
 	ld hl, PlayedFluteNoEffectText
@@ -2176,6 +2264,8 @@ ItemUsePPRestore:
 	ld [wUpdateSpritesEnabled], a
 	ld a, USE_ITEM_PARTY_MENU
 	ld [wPartyMenuTypeOrMessageID], a
+	ld a, 1 ;CHS_FIX 20 for opening party menu using items
+	ld [wIfPartyMenuOpenedDuringBattle],a ;
 	call DisplayPartyMenu
 	jr nc, .chooseMove
 	jp .itemNotUsed
@@ -2563,6 +2653,12 @@ Func_e4bf:
 ThrowBallAtTrainerMon:
 	call RunDefaultPaletteCommand
 	call LoadScreenTilesFromBuffer1 ; restore saved screen
+	ld a, 1
+	ld [wIfDexSeen], a
+	call ReloadPKMNName
+	; call ReloadPlayerPKMNLevel
+	ld a, 0
+	ld [wIfDexSeen], a
 	call Delay3
 	ld a, TOSS_ANIM
 	ld [wAnimationID], a

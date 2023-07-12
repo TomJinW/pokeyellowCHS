@@ -2582,6 +2582,32 @@ wBoxMonNicksEnd::
 
 wBoxDataEnd::
 
+wDFSCode:: ds 4
+wDFSFontSytle:: ds 1
+wDFSV0Only:: ds 1
+wDFSStack:: ds 1
+wDFSCombineCode:: ds 2
+wIMEPinyin:: ds 7
+wIMEChar:: ds 2
+wIMELine:: ds 1
+wIMEMaxLine:: ds 1
+wIMEBank:: ds 1
+wIMEAddr:: ds 2
+wBuffer2:: ds 6
+
+; wd47a:: ds 1 ; d479
+; wc0f3:: ds 1
+wc0f4:: ds 1
+wc0f5:: ds 11
+ds 24	 
+
+wIfPartyMenuOpenedDuringBattle:: ds 1
+wTempSpace:: ds 1
+wIfDexSeen:: ds 1
+wPartyIndex:: ds 1
+wCanLearnMark:: ds 1
+wCannotLearnMark:: ds 1
+wMarkSave:: ds 1
 
 SECTION "GBC Palette Data", WRAM0
 
@@ -2597,5 +2623,5 @@ wBGPPalsBuffer:: ds NUM_ACTIVE_PALS * PALETTE_SIZE
 SECTION "Stack", WRAM0
 
 ; the stack grows downward
-	ds $eb - 1
+	; ds $eb - 1
 wStack:: db

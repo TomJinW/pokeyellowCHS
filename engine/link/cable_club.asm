@@ -320,6 +320,7 @@ TradeCenter_SelectMon:
 	call RunPaletteCommand
 	call LoadTrainerInfoTextBoxTiles
 	call TradeCenter_DrawPartyLists
+	call TradeCenter_PushPokemonNames
 	call TradeCenter_DrawCancelBox
 	xor a
 	ld hl, wSerialSyncAndExchangeNybbleReceiveData
@@ -343,16 +344,17 @@ TradeCenter_SelectMon:
 	ld [wMenuWatchedKeys], a
 	ld a, [wEnemyPartyCount]
 	ld [wMaxMenuItem], a
-	ld a, 9
+	; CHS_Fix Fix Enemy pokemon cursor
+	ld a, 3
 	ld [wTopMenuItemY], a
-	ld a, 1
+	ld a, $B
 	ld [wTopMenuItemX], a
 .enemyMonMenu_HandleInput
 	ld hl, hUILayoutFlags
-	set 1, [hl]
+	set 2, [hl]
 	call HandleMenuInput
 	ld hl, hUILayoutFlags
-	res 1, [hl]
+	res 2, [hl]
 	and a
 	jp z, .getNewInput
 	bit BIT_A_BUTTON, a
@@ -405,7 +407,7 @@ TradeCenter_SelectMon:
 	ld [wMenuWatchedKeys], a
 	ld a, [wPartyCount]
 	ld [wMaxMenuItem], a
-	ld a, 1
+	ld a, 3
 	ld [wTopMenuItemY], a
 	ld a, 1
 	ld [wTopMenuItemX], a
@@ -414,10 +416,10 @@ TradeCenter_SelectMon:
 	call ClearScreenArea
 .playerMonMenu_HandleInput
 	ld hl, hUILayoutFlags
-	set 1, [hl]
+	set 2, [hl]
 	call HandleMenuInput
 	ld hl, hUILayoutFlags
-	res 1, [hl]
+	res 2, [hl]
 	and a ; was anything pressed?
 	jr nz, .playerMonMenu_SomethingPressed
 	jp .getNewInput
@@ -609,8 +611,8 @@ TradeCenter_DrawCancelBox:
 	ld a, $7e
 	ld bc, 2 * SCREEN_WIDTH + 9
 	call FillMemory
-	hlcoord 0, 15
-	lb bc, 1, 9
+	hlcoord 0, 14
+	lb bc, 2, 9
 	call CableClub_TextBoxBorder
 	hlcoord 2, 16
 	ld de, CancelTextString
@@ -621,8 +623,8 @@ CancelTextString:
 
 TradeCenter_PlaceSelectedEnemyMonMenuCursor:
 	ld a, [wSerialSyncAndExchangeNybbleReceiveData]
-	hlcoord 1, 9
-	ld bc, SCREEN_WIDTH
+	hlcoord $B, 3
+	ld bc, SCREEN_WIDTH * 2
 	call AddNTimes
 	ld [hl], "▷" ; cursor
 	ret
@@ -638,25 +640,58 @@ TradeCenter_DisplayStats:
 	call GBPalNormal
 	call LoadTrainerInfoTextBoxTiles
 	call TradeCenter_DrawPartyLists
+	call TradeCenter_PushPokemonNames
 	jp TradeCenter_DrawCancelBox
 
+TradeCenter_PushPokemonNames:
+	; CHS_Fix Push player pokemon names
+	ld a, 0
+	lb bc, 6, 6
+	hlcoord 2, 2
+	call DFSStaticize
+
+	ld a, $24
+	lb bc, 6, 6
+	hlcoord $C, 2
+	call DFSStaticize
+
+	ld a, $48
+	lb bc, 2, 18
+	hlcoord 2, $C
+	call DFSStaticize
+	ret
+
 TradeCenter_DrawPartyLists:
-	hlcoord 0, 0
-	lb bc, 6, 18
+	; CHS_Fix draw_party list
+	; hlcoord 0, 0
+	; ld b, 6
+	; ld c, 18
+	hlcoord 0, 1
+	ld b, 12
+	ld c, 8
 	call CableClub_TextBoxBorder
-	hlcoord 0, 8
-	lb bc, 6, 18
+	; hlcoord 0, 8
+	; ld b, 6
+	; ld c, 18
+	hlcoord $0A, 1
+	ld b, 12
+	ld c, 8
 	call CableClub_TextBoxBorder
-	hlcoord 5, 0
+	; hlcoord 5, 0
+	hlcoord 2, 1
 	ld de, wPlayerName
 	call PlaceString
-	hlcoord 5, 8
+	; hlcoord 5, 8
+	hlcoord $0C, 1
 	ld de, wLinkEnemyTrainerName
 	call PlaceString
-	hlcoord 2, 1
+	; hlcoord 2, 1
+	hlcoord 2, 3
 	ld de, wPartySpecies
 	call TradeCenter_PrintPartyListNames
-	hlcoord 2, 9
+	; hlcoord 2, 9
+
+	hlcoord $0C, 3
 	ld de, wEnemyPartySpecies
 	; fall through
 
@@ -679,7 +714,7 @@ TradeCenter_PrintPartyListNames:
 	pop de
 	inc de
 	pop hl
-	ld bc, 20
+	ld bc, 40 ;ld bc, 20
 	add hl, bc
 	pop bc
 	inc c
@@ -715,10 +750,12 @@ TradeCenter_Trade:
 	add hl, bc
 	ld a, [hl]
 	ld [wd11e], a
+	call IncreaseDFSStack ;CHS_Fix Combine string
 	call GetMonName
 	ld hl, WillBeTradedText
 	bccoord 1, 14
 	call TextCommandProcessor
+	call DecreaseDFSStack ;
 	call SaveScreenTilesToBuffer1
 	hlcoord 10, 7
 	lb bc, 8, 11

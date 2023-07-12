@@ -173,6 +173,7 @@ LoadMonBackPic:
 ; been loaded with GetMonHeader.
 	ld a, [wBattleMonSpecies2]
 	ld [wcf91], a
+LoadMonBackPic2: ; CHS_Fix 14
 	hlcoord 1, 5
 	lb bc, 7, 8
 	call ClearScreenArea

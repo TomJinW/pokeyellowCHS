@@ -35,7 +35,7 @@ Printer_GetMonStats:
 	ld [hl], " "
 
 	hlcoord 2, 11
-	ld [hl], "’"
+	ld [hl], $F2 ; CHS_Fix change from feet symbol to .
 
 	hlcoord 4, 11
 	ld de, wLoadedMonMaxHP

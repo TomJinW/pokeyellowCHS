@@ -304,6 +304,17 @@ Pokedex_DrawInterface:
 	hlcoord 16, 8
 	ld de, PokedexMenuItemsText
 	call PlaceString
+
+	ld a, $4f
+	lb bc, 5, 3
+	coord hl, 16, 1
+	call DFSStaticize
+
+	ld a, $31
+	lb bc, 10, 3
+	coord hl, 16, 7
+	call DFSStaticize
+
 ; find the highest pokedex number among the pokemon the player has seen
 	ld hl, wPokedexSeenEnd - 1
 	ld b, (wPokedexSeenEnd - wPokedexSeen) * 8 + 1
@@ -463,10 +474,18 @@ ShowPokedexDataInternal:
 	call DrawDexEntryOnScreen
 	call c, Pokedex_PrintFlavorTextAtRow11
 .waitForButtonPress
+	call Delay3
+	call GBPalNormal
+	call GetMonHeader ; load pokemon picture location
+	hlcoord 1, 1
+	call LoadFlippedFrontSpriteByMonIndex ; draw pokemon picture
+	ld a, [wcf91]
+	call PlayCry ; play pokemon cry
+.waitForButtonPress2
 	call JoypadLowSensitivity
 	ldh a, [hJoy5]
 	and A_BUTTON | B_BUTTON
-	jr z, .waitForButtonPress
+	jr z, .waitForButtonPress2
 	pop af
 	ldh [hTileAnimations], a
 	call GBPalWhiteOut
@@ -536,6 +555,22 @@ DrawDexEntryOnScreen:
 	hlcoord 9, 2
 	call PlaceString
 
+	;CHS_Fix 26 Pokedex
+	ld a, $31
+	lb bc, 8, 3 ;
+	coord hl, 9, 1 ;
+	call DFSStaticize ;
+
+	ld a, $43
+	lb bc, 2, 2 ;
+	coord hl, 17, 7 ;
+	call DFSStaticize ;
+
+	ld a, $51
+	lb bc, 2, 5 ;
+	coord hl, $C, 1 ;
+	call DFSStaticize ;
+
 	ld hl, PokedexEntryPointers
 	ld a, [wd11e]
 	dec a
@@ -549,6 +584,31 @@ DrawDexEntryOnScreen:
 
 	hlcoord 9, 4
 	call PlaceString ; print species name
+
+	push af
+	push bc
+	push de
+	push hl
+
+	ld a, $47
+	lb bc, 2, 5 ;
+	coord hl, $C, 3 ;
+	call DFSStaticize ;
+	
+	ld a, $5B
+	lb bc, 2, 3 ;
+	coord hl, 9, 3 ;
+	call DFSStaticize ;
+
+	ld a, $7D
+	lb bc, 2, 1 ;
+	coord hl, $11, 3 ;
+	call DFSStaticize ;
+
+	pop hl
+	pop de
+	pop bc
+	pop af
 
 	ld h, b
 	ld l, c
@@ -574,23 +634,23 @@ DrawDexEntryOnScreen:
 	ld [wd0b5], a
 	pop de
 
-	push af
-	push bc
-	push de
-	push hl
+	; push af
+	; push bc
+	; push de
+	; push hl
 
-	call Delay3
-	call GBPalNormal
-	call GetMonHeader ; load pokemon picture location
-	hlcoord 1, 1
-	call LoadFlippedFrontSpriteByMonIndex ; draw pokemon picture
-	ld a, [wcf91]
-	call PlayCry ; play pokemon cry
+	; call Delay3
+	; call GBPalNormal
+	; call GetMonHeader ; load pokemon picture location
+	; hlcoord 1, 1
+	; call LoadFlippedFrontSpriteByMonIndex ; draw pokemon picture
+	; ld a, [wcf91]
+	; call PlayCry ; play pokemon cry
 
-	pop hl
-	pop de
-	pop bc
-	pop af
+	; pop hl
+	; pop de
+	; pop bc
+	; pop af
 
 	ld a, c
 	and a
@@ -598,17 +658,17 @@ DrawDexEntryOnScreen:
 
 	inc de ; de = address of feet (height)
 	ld a, [de] ; reads feet, but a is overwritten without being used
-	hlcoord 12, 6
+	hlcoord 13, 6
 	lb bc, 1, 2
 	call PrintNumber ; print feet (height)
-	ld a, "′"
+	ld a, $F2
 	ld [hl], a
 	inc de
 	inc de ; de = address of inches (height)
-	hlcoord 15, 6
-	lb bc, LEADING_ZEROES | 1, 2
+	hlcoord 10, 6
+	lb bc, 1, 1
 	call PrintNumber ; print inches (height)
-	ld a, "″"
+	ld a, $61
 	ld [hl], a
 ; now print the weight (note that weight is stored in tenths of pounds internally)
 	inc de

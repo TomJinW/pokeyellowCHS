@@ -90,6 +90,8 @@ DisplayNamingScreen:
 	ld b, SET_PAL_GENERIC
 	call RunPaletteCommand
 	call LoadHpBarAndStatusTilePatterns
+	call LoadFontTilePatterns ;Fix Naming Screen CHS_Fix
+	farcall DFSSetAlphabetCache
 	call LoadEDTile
 	farcall LoadMonPartySpriteGfx
 	hlcoord 0, 4
@@ -159,6 +161,11 @@ DisplayNamingScreen:
 	ld bc, NAME_LENGTH
 	call CopyData
 	call GBPalWhiteOutWithDelay3
+	;CHS_FIX p43
+	coord hl, 1, $D ;
+	ld b, 4 ;
+	ld c, 18 ;
+	call ClearScreenArea
 	call ClearScreen
 	call ClearSprites
 	call RunDefaultPaletteCommand
@@ -481,9 +488,9 @@ PrintNamingText:
 	call GetMonName
 	hlcoord 4, 1
 	call PlaceString
-	ld hl, $1
-	add hl, bc
-	ld [hl], "の" ; leftover from Japanese version; blank tile $c9 in English
+	; ld hl, $1
+	; add hl, bc
+	; ld [hl], "の" ; leftover from Japanese version; blank tile $c9 in English
 	hlcoord 1, 3
 	ld de, NicknameTextString
 	jr .placeString

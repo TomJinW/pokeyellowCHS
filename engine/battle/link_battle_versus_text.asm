@@ -1,8 +1,9 @@
 ; display "[player] VS [enemy]" text box with pokeballs representing their parties next to the names
 DisplayLinkBattleVersusTextBox:
 	call LoadTextBoxTilePatterns
-	hlcoord 3, 4
-	lb bc, 7, 12
+	; CHS Fix Link Battle Box fit names
+	hlcoord 3, 3
+	lb bc, 8, 12
 	call TextBoxBorder
 	hlcoord 4, 5
 	ld de, wPlayerName

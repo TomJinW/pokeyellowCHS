@@ -259,6 +259,10 @@ GainExperience:
 	ld [wMonDataLocation], a
 	ld a, [wd0b5]
 	ld [wd11e], a
+	ld a, $0 ; CHS_FIX p38
+	lb bc, 2, 8 ;
+	hlcoord 9, 7 ;
+	call DFSStaticize ;
 	predef LearnMoveFromLevelUp
 	ld hl, wCanEvolveFlags
 	ld a, [wWhichPokemon]

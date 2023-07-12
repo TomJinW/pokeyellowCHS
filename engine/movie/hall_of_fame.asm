@@ -176,18 +176,18 @@ HoFDisplayMonInfo:
 	hlcoord 0, 2
 	lb bc, 9, 10
 	call TextBoxBorder
-	hlcoord 2, 6
+	hlcoord 1, 6; hlcoord 2, 6 CHS_Fix 17
 	ld de, HoFMonInfoText
 	call PlaceString
 	hlcoord 1, 4
 	ld de, wcd6d
 	call PlaceString
 	ld a, [wHoFMonLevel]
-	hlcoord 8, 7
+	hlcoord 6, 6 ; hlcoord 8, 7 CHS_Fix 17
 	call PrintLevelCommon
 	ld a, [wHoFMonSpecies]
 	ld [wd0b5], a
-	hlcoord 3, 9
+	hlcoord 6, 8 ; hlcoord 3, 9 CHS_Fix 17
 	predef PrintMonType
 	ret
 
