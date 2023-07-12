@@ -31,7 +31,7 @@ def readTextFile(path):
 def removeNone(text):
     if text == None:
         return ''
-    return text
+    return str(text)
 
 def replaceTextwithCondition(text,replacee,replacer,lastRow):
     
@@ -86,7 +86,7 @@ print('Importing db Data...')
 def getIfSkipped(inputVer):
     if inputVer == '':
         return False
-    return inputVer != ver
+    return not (ver in inputVer)
 
 for sheet in wb._sheets:
     replacees = []
@@ -131,7 +131,7 @@ for sheet in wb._sheets:
 
             if sheet.cell(row=id, column = mode + 4).value == None:
                 if sheet.cell(row=id, column = mode + 3).value != None:
-                    newReplacee = sheet.cell(row=id, column = mode + 3).value
+                    newReplacee = str(sheet.cell(row=id, column = mode + 3).value)
                     text2Modify = text2Modify.replace(replacee,newReplacee)
                 else:
                     if buildMode != 2:
