@@ -1,0 +1,9 @@
+data/text/text_1.asm
+data/text/text_2.asm
+data/text/text_3.asm
+data/text/text_4.asm
+data/text/text_5.asm
+data/text/text_6.asm
+data/text/text_7.asm
+data/text/text_8.asm
+data/text/text_9.asm

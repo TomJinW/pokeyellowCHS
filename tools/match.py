@@ -152,7 +152,8 @@ replaceable = {'#':'Poké'}
 def loadLGPEText(wb):
     result = []
     sheet = wb._sheets[0]
-    for i in range(1,30447):
+    # 30447
+    for i in range(1,2445):
         singleItem = []
         for j in range(1,4):
             label = sheet.cell(row=i, column=j).value
@@ -215,16 +216,16 @@ lgpeTextList = loadLGPEText(lgpeWB)
 db = lcspy.WLCSDB([getTextComponents(lgpeTextList[i][2],False) for i in range(len(lgpeTextList))])
 
 
-print('Loading Gen1 text')
-gen1TextFiles = readTextFiles(['xlsx/pkr.jp.ori.txt'])
-jpnTextdata = makeGen1JPNData(gen1TextFiles[0])
+# print('Loading Gen1 text')
+# gen1TextFiles = readTextFiles(['xlsx/pkr.jp.ori.txt'])
+# jpnTextdata = makeGen1JPNData(gen1TextFiles[0])
 
 # for data in jpnTextdata:
 #     print("text:")
 #     print(data[0])
 #     print(data[1])
 
-jpndb = lcspy.WLCSDB([jpnTextdata[i][1] for i in range(len(jpnTextdata))])
+# jpndb = lcspy.WLCSDB([jpnTextdata[i][1] for i in range(len(jpnTextdata))])
 
 wb =  load_workbook(filename = loadPath)
 mode = int(sys.argv[2])
@@ -286,18 +287,18 @@ for sheet in wb._sheets:
                         if proceed:
                             sheet.cell(row=labelRow + 1 + lineID, column=mode + 10 + col).fill = warningFill
 
-                lgpeJPNTextComponent = getTextComponents(lgpeTextList[ind][1],True)
-                ind2 =jpndb.par_search(lgpeJPNTextComponent)
+                # lgpeJPNTextComponent = getTextComponents(lgpeTextList[ind][1],True)
+                # ind2 =jpndb.par_search(lgpeJPNTextComponent)
 
 
-                text = jpnTextdata[ind2][0]
-                lineComponents = text.split('\n')
-                for lineID in range(len(lineComponents)):
-                    line = lineComponents[lineID]
-                    text = line.replace('\n','')
-                    sheet.cell(row=labelRow + 1 + lineID, column=mode + 10).value = text
-                    if proceed:
-                        sheet.cell(row=labelRow + 1 + lineID, column=mode + 10).fill = warningFill
+                # text = jpnTextdata[ind2][0]
+                # lineComponents = text.split('\n')
+                # for lineID in range(len(lineComponents)):
+                #     line = lineComponents[lineID]
+                #     text = line.replace('\n','')
+                #     sheet.cell(row=labelRow + 1 + lineID, column=mode + 10).value = text
+                #     if proceed:
+                #         sheet.cell(row=labelRow + 1 + lineID, column=mode + 10).fill = warningFill
                 # print('Original Text:')
                 # print(labelText)
                 # print("Most Match LGPE ENG:")
@@ -306,8 +307,8 @@ for sheet in wb._sheets:
                 # print(lgpeTextList[ind][0])
                 print("Most Match LGPE JPN:")
                 print(lgpeTextList[ind][1])
-                print("Most Match Gen1 JPN:")
-                print(jpnTextdata[ind2][0])
+                # print("Most Match Gen1 JPN:")
+                # print(jpnTextdata[ind2][0])
 
                 print('')
             

@@ -470,8 +470,7 @@ INCLUDE "data/moves/hm_moves.asm"
 
 LoadSubMenuOptionString_CHS: ; CHS_Fix 24
 	hlcoord 9, 10
-	ld b, 6
-	ld c, 9
+	lb bc, 6, 9
 	call TextBoxBorder
 	ld a, [wParentMenuItem]
 	and a ; was the Deposit or Withdraw item selected in the parent menu?
