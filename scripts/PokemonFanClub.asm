@@ -234,6 +234,8 @@ FanClubText5:
 	call DisplayPartyMenu
 	jp nc, .print
 	call GBPalWhiteOutWithDelay3
+	; CHS_Fix 20 naming tileset
+	call ReloadTilesetTilePatterns; 
 	call RestoreScreenTilesAndReloadTilePatterns
 	ld hl, Text_59c24
 	jr .gbpals_print_text
