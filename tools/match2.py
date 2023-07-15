@@ -18,11 +18,6 @@ from openpyxl.styles import Color, PatternFill, Font, Border
 warningFill = PatternFill(start_color='E0F8E0F8',
                    end_color='E0F8E0F8',
                    fill_type='solid')
-
-def removeNone(text):
-    if text == None:
-        return ''
-    return str(text)
 # class Temp:
 #     L, idx1, idx2 = 0, 0, 0
 
@@ -158,7 +153,7 @@ def loadLGPEText(wb):
     result = []
     sheet = wb._sheets[0]
     # 30447
-    for i in range(1,2445):
+    for i in range(1,30447):
         singleItem = []
         for j in range(1,4):
             label = sheet.cell(row=i, column=j).value
@@ -213,7 +208,7 @@ def makeGen1JPNData(lines):
 
     return result
 
-lgpeWB = load_workbook(filename = 'xlsx/LGPE.xlsx')
+lgpeWB = load_workbook(filename = 'xlsx/LGPE2.xlsx')
 loadPath = sys.argv[1]
 
 print('Loading LGPE text')
@@ -221,16 +216,16 @@ lgpeTextList = loadLGPEText(lgpeWB)
 db = lcspy.WLCSDB([getTextComponents(lgpeTextList[i][2],False) for i in range(len(lgpeTextList))])
 
 
-# print('Loading Gen1 text')
-# gen1TextFiles = readTextFiles(['xlsx/pkr.jp.ori.txt'])
-# jpnTextdata = makeGen1JPNData(gen1TextFiles[0])
+print('Loading Gen1 text')
+gen1TextFiles = readTextFiles(['xlsx/pky.jp.ori.txt'])
+jpnTextdata = makeGen1JPNData(gen1TextFiles[0])
 
 # for data in jpnTextdata:
 #     print("text:")
 #     print(data[0])
 #     print(data[1])
 
-# jpndb = lcspy.WLCSDB([jpnTextdata[i][1] for i in range(len(jpnTextdata))])
+jpndb = lcspy.WLCSDB([jpnTextdata[i][1] for i in range(len(jpnTextdata))])
 
 wb =  load_workbook(filename = loadPath)
 mode = int(sys.argv[2])
@@ -248,14 +243,16 @@ for sheet in wb._sheets:
     sheet.column_dimensions['L'].width = 34
     sheet.column_dimensions['M'].width = 34
     sheet.column_dimensions['N'].width = 40
+    sheet.column_dimensions['O'].width = 34
 
     sheet.cell(row=1, column=mode + 6).value = '翻译区'
     sheet.cell(row=1, column=mode + 8).value = 'Gen1RB:CHS INST'
     sheet.cell(row=1, column=mode + 9).value = 'Gen1RB:CHS (Auto Match)'
     sheet.cell(row=1, column=mode + 10).value = 'Gen1RB:ENG (Auto Match)'
-    sheet.cell(row=1, column=mode + 11).value = 'LGPE:ENG'
-    sheet.cell(row=1, column=mode + 12).value = 'LGPE:CHS'
-    sheet.cell(row=1, column=mode + 12).value = 'LGPE:JPN'
+    sheet.cell(row=1, column=mode + 11).value = 'LGPE:ENG (Auto Match)'
+    sheet.cell(row=1, column=mode + 12).value = 'LGPE:CHS (Auto Match)'
+    sheet.cell(row=1, column=mode + 13).value = 'LGPE:JPN (Auto Match)'
+    sheet.cell(row=1, column=mode + 14).value = 'Gen1:JPN (Auto Match)'
     id = 2
     while sheet.cell(row=id, column=mode).value != 'end':
         label = sheet.cell(row=id, column=mode).value
@@ -282,22 +279,9 @@ for sheet in wb._sheets:
                 proceed = lenG7 > lenG1 * 0.5
 
             if True or proceed:
-                perfectMatch = labelText.replace('\n','').replace(' ','') == lgpeTextList[ind][2].replace('\n','').replace(' ','')
-                if perfectMatch:
-                    newIDX = 0
-                    tmpTXT = removeNone(sheet.cell(row=labelRow + 1 + newIDX, column=5).value)
-                    while not ':' in tmpTXT and not 'end' in tmpTXT:
-                        # print("HAHA " + str(labelRow + 1 + newIDX))
-                        sheet.cell(row=labelRow + 1 + newIDX, column=6).value = ''
-                        sheet.cell(row=labelRow + 1 + newIDX, column=7).value = ''
-                        tmpTXT = removeNone(sheet.cell(row=labelRow + 1 + newIDX, column=5).value)
-                        newIDX += 1
                 for idx in range(len(lgpeTextList[ind])):
                     text = lgpeTextList[ind][idx]
                     lineComponents = text.split('\n')
-                    
-
-
 
                     for lineID in range(len(lineComponents)):
                         line = lineComponents[lineID]
@@ -306,36 +290,34 @@ for sheet in wb._sheets:
                         if idx == 0:
                             col = -1
                         newcol = mode + 10 + col
-                        if newcol == 12:
-                            newcol = 9
+                        if newcol == 10:
+                            newcol = 13
+                        elif newcol == 12:
+                            newcol = 14       
                         elif newcol == 13:
-                            newcol = 11
+                            newcol = 12                          
+
                         sheet.cell(row=labelRow + 1 + lineID, column=newcol).value = text
-                        if perfectMatch:
+                        if labelText.replace('\n','').replace(' ','') == lgpeTextList[ind][2].replace('\n','').replace(' ',''):
                             sheet.cell(row=labelRow + 1 + lineID, column=newcol).fill = warningFill
-                        if perfectMatch:
-                            if newcol == 9:
-                                newcol = 6
-                            elif newcol == 10:
-                                newcol = 7
-                        sheet.cell(row=labelRow + 1 + lineID, column=newcol).value = text
-                        if perfectMatch:
+                        if proceed:
                             sheet.cell(row=labelRow + 1 + lineID, column=newcol).fill = warningFill
-                        # if proceed:
-                        #     sheet.cell(row=labelRow + 1 + lineID, column=newcol).fill = warningFill
 
-                # lgpeJPNTextComponent = getTextComponents(lgpeTextList[ind][1],True)
-                # ind2 =jpndb.par_search(lgpeJPNTextComponent)
+                lgpeJPNTextComponent = getTextComponents(lgpeTextList[ind][1],True)
+                ind2 =jpndb.par_search(lgpeJPNTextComponent)
 
 
-                # text = jpnTextdata[ind2][0]
-                # lineComponents = text.split('\n')
-                # for lineID in range(len(lineComponents)):
-                #     line = lineComponents[lineID]
-                #     text = line.replace('\n','')
-                #     sheet.cell(row=labelRow + 1 + lineID, column=mode + 10).value = text
-                #     if proceed:
-                #         sheet.cell(row=labelRow + 1 + lineID, column=mode + 10).fill = warningFill
+                text = jpnTextdata[ind2][0]
+                lineComponents = text.split('\n')
+                for lineID in range(len(lineComponents)):
+                    line = lineComponents[lineID]
+                    text = line.replace('\n','')
+                    newCOL = mode + 10
+                    if newCOL == 11:
+                        newCOL = 15
+                    sheet.cell(row=labelRow + 1 + lineID, column=newCOL).value = text
+                    if proceed:
+                        sheet.cell(row=labelRow + 1 + lineID, column=newCOL).fill = warningFill
                 # print(labelText.replace('\n','').replace(' ','') == lgpeTextList[ind][2].replace('\n','').replace(' ',''))
                 print('Original Text:')
                 print(labelText.replace('\n','').replace(' ',''))
@@ -345,8 +327,8 @@ for sheet in wb._sheets:
                 # print(lgpeTextList[ind][0])
                 # print("Most Match LGPE JPN:")
                 # print(lgpeTextList[ind][1])
-                # print("Most Match Gen1 JPN:")
-                # print(jpnTextdata[ind2][0])
+                print("Most Match Gen1 JPN:")
+                print(jpnTextdata[ind2][0])
 
                 print('')
             
