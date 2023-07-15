@@ -22,26 +22,29 @@ Printer_GetMonStats:
 	lb bc, 16, 18
 	call TextBoxBorder
 
-	hlcoord 0, 12
-	lb bc, 4, 18
+	; hlcoord 0, 12
+	; lb bc, 4, 18
+	hlcoord $A, 8
+	lb bc, 8, 8
 	call TextBoxBorder
 
-	hlcoord 3, 10
-	call PrintLevelFull
+
 
 	hlcoord 2, 10
 	ld a, $6e
 	ld [hli], a
 	ld [hl], " "
 
-	hlcoord 2, 11
-	ld [hl], $F2 ; CHS_Fix change from feet symbol to .
-
-	hlcoord 4, 11
+	;Print HP Logo
+	hlcoord $10, 3 ;hlcoord 2, 11
+	ld [hl], $71
+	;Print HP
+	hlcoord $10, 4; hlcoord 4, 11
 	ld de, wLoadedMonMaxHP
 	lb bc, 2, 3
 	call PrintNumber
 
+	;Print Nickname
 	ld a, [wMonHeader]
 	ld [wPokeBallAnimData], a
 	ld [wd0b5], a
@@ -50,8 +53,9 @@ Printer_GetMonStats:
 	hlcoord 8, 2
 	call PlaceString
 
+	;Print PM Name
 	call GetMonName
-	hlcoord 9, 3
+	hlcoord 8, 4 ;hlcoord 9, 3
 	call PlaceString
 
 	predef IndexToPokedex
@@ -63,39 +67,67 @@ Printer_GetMonStats:
 	ld de, wPokeBallAnimData
 	lb bc, $80 | 1, 3
 	call PrintNumber
+	
+	hlcoord $10, 2
+	ld a,[hl]
+	cp " "
+	jr z, .normalNickname
+	hlcoord $F, 1
+	ld a, "<LV>" ; ":L" tile ID
+	ld [hli], a
+	hlcoord $10, 1
+	call PrintLevelNoLV
+	jr .skipNormal
+.normalNickname
+	; hlcoord 3, 10
+	; call PrintLevelFull 
+	hlcoord $10, 1
+	ld a, "<LV>" ; ":L" tile ID
+	ld [hli], a
+	hlcoord $10, 2
+	call PrintLevelNoLV
+.skipNormal
 
-	hlcoord 8, 4
+
+	hlcoord 8, 6 ;hlcoord 8, 4
 	ld de, .OT
 	call PlaceString
 
+	ld a, $49
+	lb bc, 2, 3
+	coord hl, 8, 5
+	call DFSStaticize
+
 	ld hl, wPartyMonOT
 	call .GetNamePointer
-	hlcoord 9, 5
+	hlcoord $C, 6 ;hlcoord 9, 5
 	call PlaceString
 
-	hlcoord 9, 6
+	hlcoord 8, 7 ;hlcoord 9, 6
 	ld de, .IDNo
 	call PlaceString
 
-	hlcoord 13, 6
+	hlcoord $C, 7 ;hlcoord 13, 6
 	ld de, wLoadedMonOTID
 	lb bc, $80 | 2, 5
 	call PrintNumber
 
-	hlcoord 9, 8
+	hlcoord 1, $A ;hlcoord 9, 8
 	ld de, .Stats
 	ldh a, [hUILayoutFlags]
-	set 2, a
+	set 4, a ;set 2, a
 	ldh [hUILayoutFlags], a
 	call PlaceString
 	ldh a, [hUILayoutFlags]
-	res 2, a
+	res 4, a ;res 2, a
 	ldh [hUILayoutFlags], a
 
-	hlcoord 16, 8
+	hlcoord 5, $A ;hlcoord 16, 8
 	ld de, wLoadedMonAttack
 	ld a, 4
 .loop
+
+
 	push af
 	push de
 
@@ -103,7 +135,7 @@ Printer_GetMonStats:
 	lb bc, 2, 3
 	call PrintNumber
 	pop hl
-	ld bc, SCREEN_WIDTH
+	ld bc, SCREEN_WIDTH * 2;ld bc, SCREEN_WIDTH
 	add hl, bc
 
 	pop de
@@ -113,21 +145,37 @@ Printer_GetMonStats:
 	dec a
 	jr nz, .loop
 
-	hlcoord 1, 13
+	ld a, $31 ;push stats text
+	lb bc, 8, 3
+	coord hl, 1, 9
+	call DFSStaticize
+	
+	hlcoord $B, $A ;hlcoord 1, 13
 	ld a, [wLoadedMonMoves]
 	call .PlaceMoveName
 
-	hlcoord 1, 14
+	hlcoord $B, $C ;hlcoord 1, 14
 	ld a, [wLoadedMonMoves + 1]
 	call .PlaceMoveName
 
-	hlcoord 1, 15
+	; push hl
+	; push bc
+	ld a, $4f
+	lb bc, 4, 6
+	coord hl, $B, 9
+	call DFSStaticize
+	; pop bc
+	; pop hl
+	
+	hlcoord $B, $E ;hlcoord 1, 15
 	ld a, [wLoadedMonMoves + 2]
 	call .PlaceMoveName
 
-	hlcoord 1, 16
+	hlcoord $B, $10 ;hlcoord 1, 16
 	ld a, [wLoadedMonMoves + 3]
 	call .PlaceMoveName
+
+
 
 	ld b, $4 ; SET_PAL_STATUS_SCREEN
 	call RunPaletteCommand

@@ -13,5 +13,7 @@ DisplayDiploma::
 	call GBPalWhiteOutWithDelay3
 	call ReloadTilesetTilePatterns
 	call RestoreScreenTilesAndReloadTilePatterns
+	;CHS_FIX 30 Reload Map Data
+	call ReloadMapData
 	call Delay3
 	jp GBPalNormal

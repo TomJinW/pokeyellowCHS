@@ -23,8 +23,10 @@ _DisplayDiploma:
 	hlcoord 19, 0
 	ld [hl], a
 
+
+
 	ld de, DiplomaText
-	hlcoord 5, 2
+	hlcoord 9, 2;hlcoord 5, 2
 	call PlaceString
 
 	ld de, DiplomaPlayer
@@ -39,9 +41,24 @@ _DisplayDiploma:
 	hlcoord 2, 6
 	call PlaceString
 
+	ld a, $1b ;
+	lb bc, 6, 15 ;
+	hlcoord 2, 5 ;
+	call DFSStaticize ;
+
+	ld de, DiplomaCongrats2
+	hlcoord 2, 12
+	call PlaceString
+
 	ld de, DiplomaGameFreak
 	hlcoord 9, 16
 	call PlaceString
+
+	hlcoord 8, 2
+	ld [hl], CIRCLE_TILE_ID
+
+	hlcoord 12, 2
+	ld [hl], CIRCLE_TILE_ID
 
 	ld b, SET_PAL_GENERIC
 	call RunPaletteCommand
@@ -52,7 +69,7 @@ _DisplayDiploma:
 	ret
 
 DiplomaText:
-	db CIRCLE_TILE_ID, "Diploma", CIRCLE_TILE_ID, "@"
+	db "Diploma@"
 
 DiplomaPlayer:
 	db "Player@"
@@ -60,8 +77,10 @@ DiplomaPlayer:
 DiplomaCongrats:
 	db   "Congrats! This"
 	next "diploma certifies"
-	next "that you have"
-	next "completed your"
+	next "that you have@"
+
+DiplomaCongrats2:
+	db "completed your"
 	next "#DEX.@"
 
 DiplomaGameFreak:
@@ -88,8 +107,15 @@ Func_e9ad3:
 	hlcoord 5, 13
 	lb bc, 1, 11
 	call Diploma_Surfing_CopyBox
+
+	ld de, SurfingPikachu3Graphics
+	ld hl, vChars2 
+	lb bc, BANK(SurfingPikachu3Graphics), (SurfingPikachu3GraphicsEnd - SurfingPikachu3Graphics) / $10
+	call CopyVideoData
+
+
 	ld de, String_e9bd5
-	hlcoord 2, 15
+	hlcoord 3, 15 ;hlcoord 2, 15
 	call PlaceString
 	hlcoord 12, 15
 	ld de, wPlayTimeHours

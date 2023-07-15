@@ -245,6 +245,12 @@ ExitBillsPC:
 	ret
 
 BillsPCPrintBox:
+	hlcoord 2, 1 ;
+	lb bc, 12, 8 ;
+	call ClearScreenArea ;
+	hlcoord 14, 15 ;
+	lb bc, 2, 3 ;
+	call ClearScreenArea ;
 	callfar PrintPCBox
 	jp BillsPCMenu
 

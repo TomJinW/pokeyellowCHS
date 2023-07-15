@@ -379,6 +379,7 @@ PrintLevel::
 PrintLevelFull::
 	ld a, "<LV>" ; ":L" tile ID
 	ld [hli], a
+PrintLevelNoLV::
 	ld c, 3 ; number of digits
 	ld a, [wLoadedMonLevel] ; level
 

@@ -305,16 +305,19 @@ Pokedex_DrawInterface:
 	ld de, PokedexMenuItemsText
 	call PlaceString
 
+	ld a, [wMarkPrinter]
+	cp 1
+	jr z, .skipForPrinter
 	ld a, $4f
 	lb bc, 5, 3
 	coord hl, 16, 1
-	call DFSStaticize
+	call DFSStaticize 
 
 	ld a, $31
 	lb bc, 10, 3
 	coord hl, 16, 7
 	call DFSStaticize
-
+.skipForPrinter
 ; find the highest pokedex number among the pokemon the player has seen
 	ld hl, wPokedexSeenEnd - 1
 	ld b, (wPokedexSeenEnd - wPokedexSeen) * 8 + 1
@@ -515,7 +518,7 @@ PokedexDataDividerLine:
 
 DrawDexEntryOnScreen:
 	call ClearScreen
-
+	
 	hlcoord 0, 0
 	ld de, 1
 	lb bc, $64, SCREEN_WIDTH
@@ -562,8 +565,8 @@ DrawDexEntryOnScreen:
 	call DFSStaticize ;
 
 	ld a, $43
-	lb bc, 2, 2 ;
-	coord hl, 17, 7 ;
+	lb bc, 1, 2 ;
+	coord hl, 17, 8 ;
 	call DFSStaticize ;
 
 	ld a, $51
@@ -600,7 +603,7 @@ DrawDexEntryOnScreen:
 	coord hl, 9, 3 ;
 	call DFSStaticize ;
 
-	ld a, $7D
+	ld a, $45
 	lb bc, 2, 1 ;
 	coord hl, $11, 3 ;
 	call DFSStaticize ;
@@ -634,23 +637,27 @@ DrawDexEntryOnScreen:
 	ld [wd0b5], a
 	pop de
 
-	; push af
-	; push bc
-	; push de
-	; push hl
+	ld a,[wMarkPrinter]
+	cp 0
+	jr z, .notUsingPrinter
+	push af
+	push bc
+	push de
+	push hl
 
 	; call Delay3
 	; call GBPalNormal
-	; call GetMonHeader ; load pokemon picture location
-	; hlcoord 1, 1
-	; call LoadFlippedFrontSpriteByMonIndex ; draw pokemon picture
+	call GetMonHeader ; load pokemon picture location
+	hlcoord 1, 1
+	call LoadFlippedFrontSpriteByMonIndex ; draw pokemon picture
 	; ld a, [wcf91]
 	; call PlayCry ; play pokemon cry
 
-	; pop hl
-	; pop de
-	; pop bc
-	; pop af
+	pop hl
+	pop de
+	pop bc
+	pop af
+.notUsingPrinter
 
 	ld a, c
 	and a
@@ -729,14 +736,14 @@ Pokedex_PrepareDexEntryForPrinting:
 	hlcoord 19, 0
 	ld b, $67
 	call DrawTileLine
-	hlcoord 0, 13
+	hlcoord 0, 7
 	ld de, $1
 	lb bc, $6f, SCREEN_WIDTH
 	call DrawTileLine
 	ld a, $6c
-	ldcoord_a 0, 13
+	ldcoord_a 0, 7
 	ld a, $6e
-	ldcoord_a 19, 13
+	ldcoord_a 19, 7
 	ld a, [wPrinterPokedexEntryTextPointer]
 	ld l, a
 	ld a, [wPrinterPokedexEntryTextPointer + 1]
@@ -745,7 +752,7 @@ Pokedex_PrepareDexEntryForPrinting:
 	ldh a, [hUILayoutFlags]
 	set 3, a
 	ldh [hUILayoutFlags], a
-	call Pokedex_PrintFlavorTextAtBC
+	call Pokedex_PrintFlavorTextAtBC 
 	ldh a, [hUILayoutFlags]
 	res 3, a
 	ldh [hUILayoutFlags], a
