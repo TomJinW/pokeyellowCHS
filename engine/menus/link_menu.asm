@@ -361,23 +361,43 @@ PetitCup::
 	cp "@"
 	jr nz, .loop2
 	ld a, [hli]
-	cp $7
+	
+	; if pm >= 3.0m, not valid
+	cp 3
 	jp nc, asm_f5689
-	add a
-	add a
-	ld b, a
-	add a
-	add b
-	ld b, a
+	cp 2
 	ld a, [hli]
-	add b
-	cp $51
-	jp nc, asm_f5689
+	jr c, .lessOrEqualThan2m
+	; pm = 2.x m
+	cp 0
+	jp nz, asm_f5689 ; > 2.0m, not valid
+.lessOrEqualThan2m
+	; cp $7
+	; jp nc, asm_f5689
+	; add a
+	; add a
+	; ld b, a
+	; add a
+	; add b
+	; ld b, a
+	; ld a, [hli]
+	; add b
+	; cp $51
+	; jp nc, asm_f5689
+
 	ld a, [hli]
-	sub $b9
+	cp 201
+	jp nc, asm_f569b ; >= 20.1kg, not valid
 	ld a, [hl]
-	sbc $1
-	jp nc, asm_f569b
+	cp 0
+	jp nz, asm_f569b; higher bit is not 0, not valid
+.lessOrEqualThan20kg
+
+	; sub $b9
+	; ld a, [hl]
+	; sbc $1
+	; jp nc, asm_f569b
+
 	pop af
 	pop bc
 	pop hl

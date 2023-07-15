@@ -526,7 +526,7 @@ TradeCenter_SelectMon:
 	ld [wInitListType], a
 	callfar InitList ; the list isn't used
 	call TradeCenter_DisplayStats
-	call LoadScreenTilesFromBuffer1
+	; call LoadScreenTilesFromBuffer1
 	jp .playerMonMenu
 .choseTrade
 	call PlaceUnfilledArrowMenuCursor

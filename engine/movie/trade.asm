@@ -360,8 +360,8 @@ Trade_ShowEnemyMon:
 	ld a, TRADE_BALL_TILT_ANIM
 	call Trade_ShowAnimation
 	call Trade_ShowClearedWindow
-	hlcoord 4, 10
-	lb bc, 6, 10
+	hlcoord 3, 10
+	lb bc, 6, 13
 	call TextBoxBorder
 	call Trade_PrintEnemyMonInfoText
 	call Trade_CopyTileMapToVRAM
@@ -376,8 +376,8 @@ Trade_ShowEnemyMon:
 	ld a, [wTradedEnemyMonSpecies]
 	call PlayCry
 	call Trade_Delay100
-	hlcoord 4, 10
-	lb bc, 8, 12
+	hlcoord 3, 10
+	lb bc, 8, 15
 	call ClearScreenArea
 	jp PrintTradeTakeCareText
 
