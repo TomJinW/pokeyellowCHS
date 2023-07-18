@@ -17,11 +17,10 @@ SurfinDudeText:
 IF DEF (_YELLOW_VC)
 	bit 7, a
 ELSE
-	bit 6, a
+	bit 6, a ;bit 7, a
 ENDC
 	vc_patch_end
-	jr .next ;skip checking for all roms
-	; jr nz, .next
+	jr nz, .next
 	ld hl, .SurfinDudeText4
 	call PrintText
 	jr .done
