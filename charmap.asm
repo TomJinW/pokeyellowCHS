@@ -411,7 +411,7 @@ IF DEF(RGBDS_WCHAR)
 	charmap "‖",	$010C, 2
 	charmap "…",	$010D, 2 ;“…” (U+2026)
 	charmap "‘",	$010E, 2
-	; charmap "’",	$010F, 2
+	charmap "’",	$010F, 2
 	charmap "“",	$0110, 2
 	charmap "”",	$0111, 2
 	charmap "〔",	$0112, 2
