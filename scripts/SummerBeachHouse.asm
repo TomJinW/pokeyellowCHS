@@ -20,7 +20,8 @@ ELSE
 	bit 6, a
 ENDC
 	vc_patch_end
-	jr nz, .next
+	jr .next ;skip checking for all roms
+	; jr nz, .next
 	ld hl, .SurfinDudeText4
 	call PrintText
 	jr .done

@@ -589,3 +589,6 @@ DFS_C_2E_L::
 INCBIN "dfs/ChineseFonts_2E_L.bin"
 DFS_C_2E_H::
 INCBIN "dfs/ChineseFonts_2E_H.bin"
+
+SECTION "MISC", ROMX
+SurfingPikachu1Graphics4:: INCBIN "gfx/surfing_pikachu/surfing_pikachu_4.2bpp"
