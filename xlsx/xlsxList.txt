@@ -1,2 +1,11 @@
 data.xlsx
 dexEntry.xlsx
+buildingsA.xlsx
+buildingsB.xlsx
+core.xlsx
+data.xlsx
+dex.xlsx
+indoor.xlsx
+outdoor.xlsx
+ratings.xlsx
+routes.xlsx
