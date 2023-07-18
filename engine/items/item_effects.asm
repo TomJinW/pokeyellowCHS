@@ -199,6 +199,9 @@ ItemUseBall:
 	ld a, [wBattleType] ;if old man
 	dec a ;
 	jr z, .skipReloadingName ;
+	ld a, [wBattleType] ;if pikachu
+	cp BATTLE_TYPE_PIKACHU ; 实际游戏里，因为大木抓皮卡丘的时候玩家必定没有宝可梦，所以不会显示出任何宝可梦的名字
+	jr z, .skipReloadingName ; 所以这个判定实际上没有什么必要，但是为了Debug版的严谨性还是添加了
 	ld a, [wBattleType] ;
 	cp BATTLE_TYPE_SAFARI ;
 	jr z, .skipReloadingName ;
