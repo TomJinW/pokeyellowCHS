@@ -274,6 +274,18 @@ HandlePokedexListMenu:
 	and a
 	ret
 
+PushDexMenuText:
+	push af
+	ld a, [wMarkPrinter]
+	cp 1
+	jr z, .skipForPrinter
+	pop af
+	call DFSStaticize
+	ret
+.skipForPrinter
+	pop af
+	ret
+
 Pokedex_DrawInterface:
 	xor a
 	ldh [hAutoBGTransferEnabled], a
@@ -305,32 +317,72 @@ Pokedex_DrawInterface:
 	hlcoord 16, 5
 	lb bc, 1, 3
 	call PrintNumber ; print number of owned pokemon
+
 	hlcoord 16, 1
 	ld de, PokedexSeenText
 	call PlaceString
+	ld a, $31
+	lb bc, 2, 3
+	coord hl, 16, 0
+	call PushDexMenuText
+
 	hlcoord 16, 4
 	ld de, PokedexOwnText
 	call PlaceString
+	ld a, $37
+	lb bc, 2, 3
+	coord hl, 16, 3
+	call PushDexMenuText
+
 	hlcoord 1, 1
 	ld de, PokedexContentsText
 	call PlaceString
+	ld a, $3D
+	lb bc, 2, 3
+	coord hl, 1, 0
+	call PushDexMenuText
+
 	hlcoord 16, 8
-	ld de, PokedexMenuItemsText
+	ld de, PokedexMenuItemsText1
 	call PlaceString
-
-	ld a, [wMarkPrinter]
-	cp 1
-	jr z, .skipForPrinter
-	ld a, $4f
-	lb bc, 5, 3
-	coord hl, 16, 1
-	call DFSStaticize 
-
-	ld a, $31
-	lb bc, 10, 3
+	ld a, $43
+	lb bc, 2, 3
 	coord hl, 16, 7
-	call DFSStaticize
-.skipForPrinter
+	call PushDexMenuText
+
+	hlcoord 16, 10
+	ld de, PokedexMenuItemsText2
+	call PlaceString
+	ld a, $49
+	lb bc, 2, 3
+	coord hl, 16, 9
+	call PushDexMenuText
+
+	hlcoord 16, 12
+	ld de, PokedexMenuItemsText3
+	call PlaceString
+	ld a, $4F
+	lb bc, 2, 3
+	coord hl, 16, 11
+	call PushDexMenuText
+
+	hlcoord 16, 14
+	ld de, PokedexMenuItemsText4
+	call PlaceString
+	ld a, $55
+	lb bc, 2, 3
+	coord hl, 16, 13
+	call PushDexMenuText
+
+	hlcoord 16, 16
+	ld de, PokedexMenuItemsText5
+	call PlaceString
+	ld a, $5B
+	lb bc, 2, 3
+	coord hl, 16, 15
+	call PushDexMenuText
+
+
 ; find the highest pokedex number among the pokemon the player has seen
 	ld hl, wPokedexSeenEnd - 1
 	ld b, (wPokedexSeenEnd - wPokedexSeen) * 8 + 1
@@ -371,12 +423,16 @@ PokedexOwnText:
 PokedexContentsText:
 	db "CONTENTS@"
 
-PokedexMenuItemsText:
-	db   "DATA"
-	next "CRY"
-	next "AREA"
-	next "PRNT"
-	next "QUIT@"
+PokedexMenuItemsText1:
+	db "DATA@"
+PokedexMenuItemsText2:
+	db "CRY@"
+PokedexMenuItemsText3:
+	db "AREA@"
+PokedexMenuItemsText4:
+	db "PRNT@"
+PokedexMenuItemsText5:
+	db "QUIT@"
 
 Pokedex_PlacePokemonList:
 	xor a
