@@ -168,6 +168,8 @@ ENDC
 	jr .exitSideMenu
 
 .chosePrint
+	; ;CHS Fix clear dex text
+	call ClearPrintDexMenu ;
 	ldh a, [hTileAnimations]
 	push af
 	xor a
@@ -183,6 +185,17 @@ ENDC
 	ld b, $3
 	jr .exitSideMenu
 
+ClearPrintDexMenu:
+	hlcoord 0, 0  ;
+	lb bc, 18, 14 ;
+	call ClearScreenArea ;
+	hlcoord 15, 0  ;
+	lb bc, 6, 5 ;
+	call ClearScreenArea ;
+	hlcoord 15, 7  ;
+	lb bc, 11, 5 ;
+	call ClearScreenArea ;
+	ret
 ; handles the list of pokemon on the left of the pokedex screen
 ; sets carry flag if player presses A, unsets carry flag if player presses B
 HandlePokedexListMenu:
