@@ -33,8 +33,15 @@ PrintPokedexEntry:
 	call ClearScreen
 	ld a, 1
 	ld [wMarkPrinter], a
-	callfar Pokedex_DrawInterface
-	callfar Pokedex_PlacePokemonList
+	; callfar Pokedex_DrawInterface
+	; callfar Pokedex_PlacePokemonList
+	; ;CHS Fix clear dex text
+	; hlcoord 0, 0  ;
+	; lb bc, 5, 14 ;
+	; call ClearScreenArea ;
+	; hlcoord 15, 0  ;
+	; lb bc, 5, 5 ;
+	; call ClearScreenArea ;
 	ld a, 0
 	ld [wMarkPrinter], a
 	ld a, $1
@@ -581,6 +588,12 @@ GBPrinter_UpdateStatusMessage:
 	hlcoord 2, 15
 	ld de, .PressBToCancel
 	call PlaceString
+
+	; ld a, $ec ; CHS_FIX
+	; lb bc, 1, 4 ;
+	; hlcoord 8, 15 ;
+	; call DFSStaticize ;
+	
 	ld a, $1
 	ldh [hAutoBGTransferEnabled], a
 	xor a
