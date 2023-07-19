@@ -20,8 +20,8 @@ ELSE
 	bit 6, a ;bit 7, a
 ENDC
 	vc_patch_end
-	bit 7, a
 	ld a, [wd472]
+	bit 7, a
 	jr nz, .next
 	ld hl, .SurfinDudeText4
 	call PrintText
