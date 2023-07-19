@@ -29,7 +29,7 @@ then
     option=1
 fi
 python3 tools/_importText.py xlsx/outdoor.xlsx 5 YE $option
-python3 tools/_importText.py xlsx/dex.xlsx 5 YE $option
+python3 tools/_importText2.py xlsx/dex.xlsx 5 YE $option
 python3 tools/_importText.py xlsx/buildingsA.xlsx 5 YE $option
 python3 tools/_importText.py xlsx/buildingsB.xlsx 5 YE $option
 python3 tools/_importText.py xlsx/indoor.xlsx 5 YE $option

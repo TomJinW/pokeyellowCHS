@@ -544,7 +544,15 @@ ShowPokedexDataInternal:
 	pop af
 	ld [wd11e], a
 	call DrawDexEntryOnScreen
-	call c, Pokedex_PrintFlavorTextAtRow11
+	jr nc, .waitForButtonPress
+	push hl
+	call Pokedex_PrintFlavorTextAtRow11
+	pop hl
+	ld bc, 5
+	add hl, bc
+	bccoord 1,13
+	call Pokedex_PrintFlavorTextAtBC
+
 .waitForButtonPress
 	call Delay3
 	call GBPalNormal
@@ -825,6 +833,38 @@ Pokedex_PrepareDexEntryForPrinting:
 	ldh a, [hUILayoutFlags]
 	res 3, a
 	ldh [hUILayoutFlags], a
+
+	push af
+	push bc
+	push de
+	push hl
+
+	ld a, $31 ; CHS_FIX p38
+	lb bc, 2, 12 ;
+	hlcoord 1, 0 ;
+	call DFSStaticize
+
+	ld a, [wPrinterPokedexEntryTextPointer]
+	ld l, a
+	ld a, [wPrinterPokedexEntryTextPointer + 1]
+	ld h, a
+	ld bc, 5
+	add hl, bc
+	; ld d, h
+	; ld e, l
+
+	bccoord 1, 3
+	ldh a, [hUILayoutFlags]
+	set 3, a
+	ldh [hUILayoutFlags], a
+	call Pokedex_PrintFlavorTextAtBC 
+	ldh a, [hUILayoutFlags]
+	res 3, a
+	ldh [hUILayoutFlags], a
+	pop af
+	pop bc
+	pop de
+	pop hl
 	ret
 
 ; draws a line of tiles
@@ -833,6 +873,16 @@ Pokedex_PrepareDexEntryForPrinting:
 ; c = number of tile ID's to write
 ; de = amount to destination address after each tile (1 for horizontal, 20 for vertical)
 ; hl = destination address
+; GetLastLine: 
+; 	ld bc, 1
+; 	add hl, bc
+; 	ld a, [hl]
+; 	cp $5f 
+; 	jr nz, GetLastLine
+; 	ld bc, 1
+; 	add hl, bc
+; 	ret
+
 DrawTileLine:
 	push bc
 	push de

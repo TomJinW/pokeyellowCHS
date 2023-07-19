@@ -105,6 +105,7 @@ for sheet in wb._sheets:
         weight = 'dw ' + str(sheet.cell(row=id, column=mode + 3).value).replace('-','')
         descValue = sheet.cell(row=id, column=mode + 4).value
         desc = 'text_far ' + descValue + '\n\ttext_end\n\n'
+        desc += '\ttext_far ' + descValue + '2' + '\n\ttext_end\n\n'
         if not '_' in descValue:
             desc = 'db \"コメント さくせいちゅう@\"'
         id += 1
