@@ -36,7 +36,7 @@ OptionMenuJumpTable:
 	dw OptionsMenu_BattleStyle
 	dw OptionsMenu_SpeakerSettings
 	dw OptionsMenu_GBPrinterBrightness
-	dw OptionsMenu_Dummy
+	dw OptionsMenu_PMNames
 	dw OptionsMenu_Dummy
 	dw OptionsMenu_Cancel
 
@@ -338,6 +338,41 @@ OptionsMenu_Dummy:
 	and a
 	ret
 
+PMNamesPointerTable:
+	dw EngText
+	dw ChsText
+
+EngText:
+	db "English@"
+ChsText:
+	db "Chinese@"
+
+
+OptionsMenu_PMNames:
+	ldh a, [hJoy5]
+	and D_LEFT | D_RIGHT
+	jr nz, .CHANGED
+	ld a, [wENGNameMark]
+	and $1
+	jr .NOTCHANGED
+.CHANGED
+	ld a, [wENGNameMark]
+	xor $1
+	ld [wENGNameMark], a
+.NOTCHANGED
+	ld hl, PMNamesPointerTable
+	sla a
+	ld b, 0
+	ld c, a
+	add hl, bc
+
+	ld e, [hl]
+	inc hl
+	ld d, [hl]
+	hlcoord 14, 12
+	call PlaceString
+	ret
+
 OptionsMenu_Cancel:
 	ldh a, [hJoy5]
 	and A_BUTTON
@@ -365,7 +400,7 @@ OptionsControl:
 	scf
 	ret
 .doNotWrapAround
-	cp $4
+	cp $5 ;cp $4
 	jr c, .regularIncrement
 	ld [hl], $6
 .regularIncrement
@@ -376,7 +411,7 @@ OptionsControl:
 	ld a, [hl]
 	cp $7
 	jr nz, .doNotMoveCursorToPrintOption
-	ld [hl], $4
+	ld [hl], $5 ;ld [hl], $4
 	scf
 	ret
 .doNotMoveCursorToPrintOption
@@ -411,12 +446,21 @@ InitOptionsMenu:
 	hlcoord 2, 2
 	ld de, AllOptionsText
 	call PlaceString
+
+	ld a, $60 ; CHS_FIX p38
+	lb bc, 6, 3 ;
+	hlcoord 2, 1 ;
+	call DFSStaticize ;
+
+	hlcoord 2, 6
+	ld de, AllOptionsText2
+	call PlaceString
 	hlcoord 2, 16
 	ld de, OptionMenuCancelText
 	call PlaceString
 	xor a
 	ld [wOptionsCursorLocation], a
-	ld c, 5 ; the number of options to loop through
+	ld c, 6 ;ld c, 5 ; the number of options to loop through
 .loop
 	push bc
 	call GetOptionPointer ; updates the next option
@@ -432,12 +476,22 @@ InitOptionsMenu:
 	call Delay3
 	ret
 
+; AllOptionsText:
+; 	db "TEXT SPEED :"
+; 	next "ANIMATION  :"
+; 	next "BATTLESTYLE:"
+; 	next "SOUND:"
+; 	next "PRINT:"
+; 	next "PM NAMES@"
+
 AllOptionsText:
 	db "TEXT SPEED :"
 	next "ANIMATION  :"
-	next "BATTLESTYLE:"
+	next "BATTLESTYLE:@"
+AllOptionsText2:
 	next "SOUND:"
-	next "PRINT:@"
+	next "PRINT:"
+	next "PM NAMES:@"
 
 OptionMenuCancelText:
 	db "CANCEL@"

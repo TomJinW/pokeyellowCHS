@@ -480,9 +480,16 @@ Pokedex_PlacePokemonList:
 	ld hl, wPokedexSeen
 	call IsPokemonBitSet
 	jr nz, .getPokemonName ; if the player has seen the pokemon
+	ld a, [wENGNameMark]
+	cp 0
 	ld de, .dashedLine ; print a dashed line in place of the name if the player hasn't seen the pokemon
+	jr nz, .CHS
+	ld de, .dashedLineENG ; print a dashed line in place of the name if the player hasn't seen the pokemon
+.CHS
 	jr .skipGettingName
 .dashedLine ; for unseen pokemon in the list
+	db "--@"
+.dashedLineENG ; for unseen pokemon in the list
 	db "----------@"
 .getPokemonName
 	call PokedexToIndex
@@ -642,8 +649,13 @@ DrawDexEntryOnScreen:
 	call DFSStaticize ;
 
 	ld a, $43
-	lb bc, 1, 2 ;
+	lb bc, 1, 1 ;
 	coord hl, 17, 8 ;
+	call DFSStaticize ;
+
+	ld a, $44
+	lb bc, 1, 2 ;
+	coord hl, $C + $5, 2 ;
 	call DFSStaticize ;
 
 	ld a, $51

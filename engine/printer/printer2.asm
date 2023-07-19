@@ -36,10 +36,22 @@ Printer_GetMonStats:
 	ld [hl], " "
 
 	;Print HP Logo
-	hlcoord $10, 3 ;hlcoord 2, 11
+	ld a, [wENGNameMark]
+	cp 0
+	hlcoord $10, 3 ;hlcoord 9, 3
+	jr nz, .CHS2
+	hlcoord $F, 3
+.CHS2
 	ld [hl], $71
+
 	;Print HP
+	ld a, [wENGNameMark]
+	cp 0
 	hlcoord $10, 4; hlcoord 4, 11
+	jr nz, .CHS
+	hlcoord $10, 3; hlcoord 4, 11
+.CHS
+	
 	ld de, wLoadedMonMaxHP
 	lb bc, 2, 3
 	call PrintNumber

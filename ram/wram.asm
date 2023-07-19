@@ -2609,6 +2609,7 @@ wCanLearnMark:: ds 1
 wCannotLearnMark:: ds 1
 wMarkPrinter:: ds 1
 wTempSpace2:: ds 1
+wENGNameMark::ds 1
 
 SECTION "GBC Palette Data", WRAM0
 

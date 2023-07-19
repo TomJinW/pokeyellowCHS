@@ -846,7 +846,13 @@ PrintPCBox_DrawPage1:
 	add "1"
 .placed_box_number
 	ld [hl], a
-	hlcoord 1, 9
+
+	ld a, [wENGNameMark]
+	cp 0
+	hlcoord 1, 9; hlcoord 4, 11
+	jr nz, .CHS
+	hlcoord 1, 8; hlcoord 4, 11
+.CHS
 	ld de, wBoxSpecies
 	ld c, $3
 	call PrintPCBox_PlaceBoxMonInfo
@@ -864,7 +870,14 @@ PrintPCBox_DrawPage2:
 	ld a, [wBoxDataStart]
 	cp 4
 	ret c
-	hlcoord 1, 1
+
+	ld a, [wENGNameMark]
+	cp 0
+	hlcoord 1, 1; hlcoord 4, 11
+	jr nz, .CHS
+	hlcoord 1, 0; hlcoord 4, 11
+.CHS
+
 	ld de, wBoxSpecies + 3
 	ld c, 6
 	call PrintPCBox_PlaceBoxMonInfo
@@ -879,7 +892,13 @@ PrintPCBox_DrawPage3:
 	ld a, [wBoxDataStart]
 	cp 10
 	ret c
-	hlcoord 1, 1
+
+	ld a, [wENGNameMark]
+	cp 0
+	hlcoord 1, 1; hlcoord 4, 11
+	jr nz, .CHS
+	hlcoord 1, 0; hlcoord 4, 11
+.CHS
 	ld de, wBoxSpecies + 9
 	ld c, 6
 	call PrintPCBox_PlaceBoxMonInfo
@@ -900,7 +919,13 @@ PrintPCBox_DrawPage4:
 	ld a, [wBoxDataStart]
 	cp 16
 	ret c
-	hlcoord 1, 1 ;hlcoord 4, 0
+
+	ld a, [wENGNameMark]
+	cp 0
+	hlcoord 1, 1; hlcoord 4, 11
+	jr nz, .CHS
+	hlcoord 1, 0; hlcoord 4, 11
+.CHS
 	ld de, wBoxSpecies + 15
 	ld c, 5
 	call PrintPCBox_PlaceBoxMonInfo
@@ -974,6 +999,14 @@ PrintPCBox_PlaceBoxMonInfo:
 	add hl, bc
 	ld [hl], "/" ;ld [hl], " "
 	inc hl
+
+	ld a, [wENGNameMark]
+	cp 0
+	ld bc, 0
+	jr nz, .CHS
+	ld bc, SCREEN_WIDTH
+.CHS
+	add hl, bc
 	call PlaceString
 	push af
 	push bc
