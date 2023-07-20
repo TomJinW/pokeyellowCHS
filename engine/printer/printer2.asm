@@ -37,7 +37,7 @@ Printer_GetMonStats:
 
 	;Print HP Logo
 	ld a, [wENGNameMark]
-	cp 0
+	cp 1
 	hlcoord $10, 3 ;hlcoord 9, 3
 	jr nz, .CHS2
 	hlcoord $F, 3
@@ -46,7 +46,7 @@ Printer_GetMonStats:
 
 	;Print HP
 	ld a, [wENGNameMark]
-	cp 0
+	cp 1
 	hlcoord $10, 4; hlcoord 4, 11
 	jr nz, .CHS
 	hlcoord $10, 3; hlcoord 4, 11

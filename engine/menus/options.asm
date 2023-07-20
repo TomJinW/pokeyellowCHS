@@ -339,8 +339,9 @@ OptionsMenu_Dummy:
 	ret
 
 PMNamesPointerTable:
-	dw EngText
 	dw ChsText
+	dw EngText
+	
 
 EngText:
 	db "English@"

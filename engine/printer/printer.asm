@@ -848,7 +848,7 @@ PrintPCBox_DrawPage1:
 	ld [hl], a
 
 	ld a, [wENGNameMark]
-	cp 0
+	cp 1
 	hlcoord 1, 9; hlcoord 4, 11
 	jr nz, .CHS
 	hlcoord 1, 8; hlcoord 4, 11
@@ -872,7 +872,7 @@ PrintPCBox_DrawPage2:
 	ret c
 
 	ld a, [wENGNameMark]
-	cp 0
+	cp 1
 	hlcoord 1, 1; hlcoord 4, 11
 	jr nz, .CHS
 	hlcoord 1, 0; hlcoord 4, 11
@@ -894,7 +894,7 @@ PrintPCBox_DrawPage3:
 	ret c
 
 	ld a, [wENGNameMark]
-	cp 0
+	cp 1
 	hlcoord 1, 1; hlcoord 4, 11
 	jr nz, .CHS
 	hlcoord 1, 0; hlcoord 4, 11
@@ -921,7 +921,7 @@ PrintPCBox_DrawPage4:
 	ret c
 
 	ld a, [wENGNameMark]
-	cp 0
+	cp 1
 	hlcoord 1, 1; hlcoord 4, 11
 	jr nz, .CHS
 	hlcoord 1, 0; hlcoord 4, 11
@@ -1001,7 +1001,7 @@ PrintPCBox_PlaceBoxMonInfo:
 	inc hl
 
 	ld a, [wENGNameMark]
-	cp 0
+	cp 1
 	ld bc, 0
 	jr nz, .CHS
 	ld bc, SCREEN_WIDTH
