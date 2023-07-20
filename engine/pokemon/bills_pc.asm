@@ -161,7 +161,7 @@ BillsPCMenu:
 	lb bc, 4, 18
 	call TextBoxBorder
 	hlcoord 0, 0
-	lb bc, 12, 12
+	lb bc, 12, 14
 	call TextBoxBorder
 	call UpdateSprites
 	hlcoord 2, 2
@@ -528,6 +528,20 @@ DisplayDepositWithdrawMenu:
 	jr z, .viewStats
 .exit
 	and a
+	push af
+	ld a, [wBillPCTilemapMark]
+	cp 0
+	jr z, .donothing
+	cp $1f
+	jr z, .donothing
+	ld a, [wBillPCEnteredViewStats]
+	cp 1
+	jr nz, .donothing
+	call ReloadTilesetTilePatterns
+.donothing
+	ld a, 0
+	ld [wBillPCEnteredViewStats], a
+	pop af
 	ret
 .choseDepositWithdraw
 	scf
@@ -537,6 +551,13 @@ DisplayDepositWithdrawMenu:
 	lb bc, 6, 8 ;
 	coord hl, 6, 3 ;
 	call DFSStaticize ;
+
+	hlcoord 19,0
+	ld a, [hl]
+	ld [wBillPCTilemapMark], a
+	ld a, 1
+	ld [wBillPCEnteredViewStats], a
+
 	call SaveScreenTilesToBuffer1
 	ld a, [wParentMenuItem]
 	and a
@@ -553,11 +574,21 @@ DisplayDepositWithdrawMenu:
 	call ReloadTilesetTilePatterns ;
 	ld a,0 ;
 	ld [wTempSpace],a ;
-	; call ReloadTilesetTilePatterns
+	
+	ld a, [wBillPCTilemapMark]
+	cp 0
+	jr z, .donothing2
+	cp $3B
+	jr nz, .donothing2
+	lb bc, 2, 4 ;
+	coord hl, 16, 0 ;
+	call ClearScreenArea ;
+.donothing2
+
 	call RunDefaultPaletteCommand
 	call LoadGBPal
 	call ClearBillPCMenuSub_CHS
-	jr .loop
+	jp .loop
 
 DepositPCText:  db "DEPOSIT@"
 WithdrawPCText: db "WITHDRAW@"
