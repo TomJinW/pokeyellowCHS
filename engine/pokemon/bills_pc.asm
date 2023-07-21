@@ -531,8 +531,8 @@ DisplayDepositWithdrawMenu:
 	push af
 	ld a, [wBillPCTilemapMark]
 	cp 0
-	jr z, .donothing
-	cp $1f
+	jr z, .donothing ;PM Center
+	cp $1f ;Sliph Co
 	jr z, .donothing
 	ld a, [wBillPCEnteredViewStats]
 	cp 1
@@ -576,10 +576,10 @@ DisplayDepositWithdrawMenu:
 	ld [wTempSpace],a ;
 	
 	ld a, [wBillPCTilemapMark]
-	cp 0
+	cp 0 ;PM Center
 	jr z, .donothing2
-	cp $3B
-	jr nz, .donothing2
+	cp $0B ;PKMN Lab Right PC
+	jr z, .donothing2
 	lb bc, 2, 4 ;
 	coord hl, 16, 0 ;
 	call ClearScreenArea ;
