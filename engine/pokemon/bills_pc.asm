@@ -251,7 +251,21 @@ BillsPCPrintBox:
 	hlcoord 14, 15 ;
 	lb bc, 2, 3 ;
 	call ClearScreenArea ;
+	hlcoord 19,0
+	ld a, [hl]
+	cp 0
+	jr z, .inPokemonCenter
+	hlcoord 16,0
+	lb bc, 12,4
+	call ClearScreenArea
+.inPokemonCenter
 	callfar PrintPCBox
+	hlcoord 19,0
+	ld a, [hl]
+	cp 0
+	jr z, .inPokemonCenter2
+	call ReloadTilesetTilePatterns
+.inPokemonCenter2
 	jp BillsPCMenu
 
 BillsPCDeposit:
