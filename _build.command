@@ -10,9 +10,9 @@ make --always-make RGBDS=rgbds-cn/ CHAR_FLAGS="-D RGBDS_WCHAR"
 fi
 
 mkdir roms
-mkdir roms/yellow
+mkdir roms/yellowJP
 
-cp pokeyellow.gbc roms/yellow/pokeyellow."$option".gbc
-cp pokeyellow_vc.gbc roms/yellow/pokeyellow_vc."$option".gbc
-cp pokeyellow_debug.gbc roms/yellow/pokeyellow_debug."$option".gbc
-cp pokeyellow.patch roms/yellow/pokeyellow."$option".patch
+cp pokeyellow.gbc roms/yellowJP/pokeyellow."$option".gbc
+cp pokeyellow_vc.gbc roms/yellowJP/pokeyellow_vc."$option".gbc
+cp pokeyellow_debug.gbc roms/yellowJP/pokeyellow_debug."$option".gbc
+cp pokeyellow.patch roms/yellowJP/pokeyellow."$option".patch
