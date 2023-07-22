@@ -178,6 +178,7 @@ DebugTeam:
 	db PERSIAN, 80
 	db JIGGLYPUFF, 15
 	db STARTER_PIKACHU, 5
+	db KANGASKHAN, 5
 	db -1 ; end
 
 DebugStart:

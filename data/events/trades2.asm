@@ -1,6 +1,6 @@
-TradeMons:
+TradeMons2:
 ; entries correspond to TRADE_FOR_* constants
-	table_width 3 + NAME_LENGTH, TradeMons
+	table_width 3 + NAME_LENGTH, TradeMons2
 	; give mon, get mon, dialog id, nickname
 	; The two instances of TRADE_DIALOGSET_EVOLUTION are a leftover
 	; from the Japanese Blue trades, which used species that evolve.
@@ -18,4 +18,3 @@ TradeMons:
 	db CUBONE,     MACHOKE,  TRADE_DIALOGSET_HAPPY,     "RICKY@@@@@@"
 	assert_table_length NUM_NPC_TRADES
 
-	INCLUDE "data/events/trades2.asm"
