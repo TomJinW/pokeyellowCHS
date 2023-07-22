@@ -183,6 +183,11 @@ Printer_GetMonStats:
 	ld a, [wLoadedMonMoves + 2]
 	call .PlaceMoveName
 
+	ld a, $67
+	lb bc, 2, 3
+	coord hl, $B, $D
+	call DFSStaticize
+
 	hlcoord $B, $10 ;hlcoord 1, 16
 	ld a, [wLoadedMonMoves + 3]
 	call .PlaceMoveName

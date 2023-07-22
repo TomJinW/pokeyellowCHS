@@ -685,7 +685,7 @@ Printer_PrepareSurfingMinigameHighScoreTileMap::
 	hlcoord 4, 2 ;hlcoord 3, 2
 	call PlaceString
 	ld de, .HiScoreString
-	hlcoord 10, 4;hlcoord 9, 4
+	hlcoord 11, 4;hlcoord 9, 4
 	call PlaceString
 	ld de, .PointsString
 	hlcoord 12, 6
@@ -704,7 +704,7 @@ Printer_PrepareSurfingMinigameHighScoreTileMap::
 	xor a
 .got_name_length
 	ld c, a
-	hlcoord 3, 4;hlcoord 2, 4
+	hlcoord 4, 4;hlcoord 2, 4
 	add hl, bc
 	call PlaceString
 	call CopySurfingMinigameScore
