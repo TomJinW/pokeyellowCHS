@@ -50,9 +50,23 @@ _DisplayDiploma:
 	hlcoord 2, 12
 	call PlaceString
 
+	ld a, $59 ;
+	lb bc, 2, 15 ;
+	hlcoord 2, 11 ;
+	call DFSStaticize ;
+
+	ld de, DiplomaCongrats3
+	hlcoord 2, 14
+	call PlaceString
+
 	ld de, DiplomaGameFreak
 	hlcoord 9, 16
 	call PlaceString
+
+	ld a, $11 ;
+	lb bc, 1, 10 ;
+	hlcoord 9, 16 ;
+	call DFSStaticize ;
 
 	hlcoord 8, 2
 	ld [hl], CIRCLE_TILE_ID
@@ -80,8 +94,9 @@ DiplomaCongrats:
 	next "that you have@"
 
 DiplomaCongrats2:
-	db "completed your"
-	next "#DEX.@"
+	db "completed your@"
+DiplomaCongrats3:
+	db "#DEX.@"
 
 DiplomaGameFreak:
 	db "GAME FREAK@"
