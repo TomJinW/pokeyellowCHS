@@ -28,17 +28,17 @@ then
     echo The Option is not set, using the default one.
     option=1
 fi
-python3 tools/_importText.py xlsx/outdoor.xlsx 5 YE $option
-python3 tools/_importText2.py xlsx/dex.xlsx 5 YE $option
-python3 tools/_importText.py xlsx/buildingsA.xlsx 5 YE $option
-python3 tools/_importText.py xlsx/buildingsB.xlsx 5 YE $option
-python3 tools/_importText.py xlsx/indoor.xlsx 5 YE $option
-python3 tools/_importText.py xlsx/routes.xlsx 5 YE $option
-python3 tools/_importText.py xlsx/core.xlsx 5 YE $option
-python3 tools/_importText.py xlsx/ratings.xlsx 5 YE $option
+python3 tools/_importText.py xlsx/outdoor.xlsx 5 YEUS $option
+python3 tools/_importText2.py xlsx/dex.xlsx 5 YEUS $option
+python3 tools/_importText.py xlsx/buildingsA.xlsx 5 YEUS $option
+python3 tools/_importText.py xlsx/buildingsB.xlsx 5 YEUS $option
+python3 tools/_importText.py xlsx/indoor.xlsx 5 YEUS $option
+python3 tools/_importText.py xlsx/routes.xlsx 5 YEUS $option
+python3 tools/_importText.py xlsx/core.xlsx 5 YEUS $option
+python3 tools/_importText.py xlsx/ratings.xlsx 5 YEUS $option
 
-python3 tools/_importDexEntry.py xlsx/dexEntry.xlsx 13 1 $option YE
-python3 tools/_importTextData.py xlsx/data.xlsx 1 YE $option
+python3 tools/_importDexEntry.py xlsx/dexEntry.xlsx 13 1 $option YEUS
+python3 tools/_importTextData.py xlsx/data.xlsx 1 YEUS $option
 
 
 ./_build.command $option
