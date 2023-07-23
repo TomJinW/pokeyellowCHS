@@ -286,6 +286,22 @@ EnemyRanText:
 	text_far _EnemyRanText
 	text_end
 
+IF DEF(_DEBUG) 
+InstantDie:
+	push af
+	push hl
+	call DebugPressedOrHeldSELECT
+	jr z, .selectIsNotPressed
+	ld hl,wEnemyMonHP
+	ld a, 0
+	ld [hli],a
+	ld [hl],a
+.selectIsNotPressed
+	pop af
+	pop hl
+	ret
+ENDC
+
 MainInBattleLoop:
 	call ReadPlayerMonCurHPAndStatus
 	ld hl, wBattleMonHP
@@ -295,6 +311,9 @@ MainInBattleLoop:
 	ld hl, wEnemyMonHP
 	ld a, [hli]
 	or [hl] ; is enemy mon HP 0?
+	IF DEF(_DEBUG)
+	call InstantDie
+	ENDC
 	jp z, HandleEnemyMonFainted ; if enemy mon HP is 0, jump
 	call SaveScreenTilesToBuffer1
 	xor a
@@ -433,6 +452,9 @@ MainInBattleLoop:
 	jp z, HandlePlayerMonFainted
 .AIActionUsedEnemyFirst
 	call HandlePoisonBurnLeechSeed
+	IF DEF(_DEBUG)
+	call InstantDie
+	ENDC
 	jp z, HandleEnemyMonFainted
 	call DrawHUDsAndHPBars
 	call ExecutePlayerMove
@@ -441,6 +463,9 @@ MainInBattleLoop:
 	ret nz ; if so, return
 	ld a, b
 	and a
+	IF DEF(_DEBUG)
+	call InstantDie
+	ENDC
 	jp z, HandleEnemyMonFainted
 	call HandlePoisonBurnLeechSeed
 	jp z, HandlePlayerMonFainted
@@ -454,6 +479,9 @@ MainInBattleLoop:
 	ret nz ; if so, return
 	ld a, b
 	and a
+	IF DEF(_DEBUG)
+	call InstantDie
+	ENDC
 	jp z, HandleEnemyMonFainted
 	call HandlePoisonBurnLeechSeed
 	jp z, HandlePlayerMonFainted
@@ -471,6 +499,9 @@ MainInBattleLoop:
 	jp z, HandlePlayerMonFainted
 .AIActionUsedPlayerFirst
 	call HandlePoisonBurnLeechSeed
+	IF DEF(_DEBUG)
+	call InstantDie
+	ENDC
 	jp z, HandleEnemyMonFainted
 	call DrawHUDsAndHPBars
 	call CheckNumAttacksLeft

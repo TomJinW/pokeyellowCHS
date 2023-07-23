@@ -58,3 +58,13 @@ IF DEF(_DEBUG)
 	ret
 ENDC
 	ret
+
+DebugPressedOrHeldSELECT::
+IF DEF(_DEBUG)
+	ldh a, [hJoyHeld]
+	bit BIT_SELECT, a
+	ret nz
+	ldh a, [hJoyPressed]
+	bit BIT_SELECT, a
+	ret
+ENDC
