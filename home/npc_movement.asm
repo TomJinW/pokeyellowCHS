@@ -69,16 +69,6 @@ ENDC
 ; 	ret
 ; ENDC
 
-DebugPressedOrHeldUP::
-IF DEF(_DEBUG)
-	ldh a, [hJoyHeld]
-	bit BIT_D_UP, a
-	ret nz
-	ldh a, [hJoyPressed]
-	bit BIT_D_UP, a
-	ret
-ENDC
-	
 ; DebugPressedOrHeldA::
 ; IF DEF(_DEBUG)
 ; 	ldh a, [hJoyHeld]
@@ -88,3 +78,13 @@ ENDC
 ; 	bit BIT_A_BUTTON, a
 ; 	ret
 ; ENDC
+
+DebugPressedOrHeldUP::
+IF DEF(_DEBUG)
+	ldh a, [hJoyHeld]
+	bit BIT_D_UP, a
+	ret nz
+	ldh a, [hJoyPressed]
+	bit BIT_D_UP, a
+	ret
+ENDC
