@@ -290,13 +290,17 @@ IF DEF(_DEBUG)
 InstantDie:
 	push af
 	push hl
-	call DebugPressedOrHeldSELECT
-	jr z, .selectIsNotPressed
-	ld hl,wEnemyMonHP
+	; ld a, [wOptions]
+	; and $80 ; mask other bits
+	; cp $80
+	; jr nz, .skipDying
+	call DebugPressedOrHeldUP
+	jr z, .skipDying
+	ld hl, wEnemyMonHP
 	ld a, 0
 	ld [hli],a
 	ld [hl],a
-.selectIsNotPressed
+.skipDying
 	pop af
 	pop hl
 	ret
@@ -308,12 +312,12 @@ MainInBattleLoop:
 	ld a, [hli]
 	or [hl] ; is battle mon HP 0?
 	jp z, HandlePlayerMonFainted  ; if battle mon HP is 0, jump
-	ld hl, wEnemyMonHP
-	ld a, [hli]
-	or [hl] ; is enemy mon HP 0?
 	IF DEF(_DEBUG)
 	call InstantDie
 	ENDC
+	ld hl, wEnemyMonHP
+	ld a, [hli]
+	or [hl] ; is enemy mon HP 0?
 	jp z, HandleEnemyMonFainted ; if enemy mon HP is 0, jump
 	call SaveScreenTilesToBuffer1
 	xor a
@@ -451,11 +455,14 @@ MainInBattleLoop:
 	and a
 	jp z, HandlePlayerMonFainted
 .AIActionUsedEnemyFirst
-	call HandlePoisonBurnLeechSeed
 	IF DEF(_DEBUG)
 	call InstantDie
 	ENDC
+	call HandlePoisonBurnLeechSeed
 	jp z, HandleEnemyMonFainted
+	IF DEF(_DEBUG)
+	call InstantDie
+	ENDC
 	call DrawHUDsAndHPBars
 	call ExecutePlayerMove
 	ld a, [wEscapedFromBattle]
@@ -463,9 +470,6 @@ MainInBattleLoop:
 	ret nz ; if so, return
 	ld a, b
 	and a
-	IF DEF(_DEBUG)
-	call InstantDie
-	ENDC
 	jp z, HandleEnemyMonFainted
 	call HandlePoisonBurnLeechSeed
 	jp z, HandlePlayerMonFainted
@@ -473,15 +477,15 @@ MainInBattleLoop:
 	call CheckNumAttacksLeft
 	jp MainInBattleLoop
 .playerMovesFirst
+	IF DEF(_DEBUG)
+	call InstantDie
+	ENDC
 	call ExecutePlayerMove
 	ld a, [wEscapedFromBattle]
 	and a ; was Teleport, Road, or Whirlwind used to escape from battle?
 	ret nz ; if so, return
 	ld a, b
 	and a
-	IF DEF(_DEBUG)
-	call InstantDie
-	ENDC
 	jp z, HandleEnemyMonFainted
 	call HandlePoisonBurnLeechSeed
 	jp z, HandlePlayerMonFainted
@@ -498,10 +502,10 @@ MainInBattleLoop:
 	and a
 	jp z, HandlePlayerMonFainted
 .AIActionUsedPlayerFirst
-	call HandlePoisonBurnLeechSeed
 	IF DEF(_DEBUG)
 	call InstantDie
 	ENDC
+	call HandlePoisonBurnLeechSeed
 	jp z, HandleEnemyMonFainted
 	call DrawHUDsAndHPBars
 	call CheckNumAttacksLeft
