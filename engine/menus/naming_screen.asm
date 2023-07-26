@@ -33,6 +33,7 @@ AskName:
 	and a
 	jr nz, .inBattle
 	call ReloadMapSpriteTilePatterns
+	call ReloadTilesetTilePatterns
 .inBattle
 	call LoadScreenTilesFromBuffer1
 	pop hl
@@ -61,6 +62,7 @@ DisplayNameRaterScreen::
 	call DisplayNamingScreen
 	call GBPalWhiteOutWithDelay3
 	call RestoreScreenTilesAndReloadTilePatterns
+	call ReloadTilesetTilePatterns
 	call LoadGBPal
 	ld a, [wStringBuffer]
 	cp "@"
