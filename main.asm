@@ -592,3 +592,6 @@ INCBIN "dfs/ChineseFonts_2E_H.bin"
 
 SECTION "MISC", ROMX
 SurfingPikachu1Graphics4:: INCBIN "gfx/surfing_pikachu/surfing_pikachu_4.2bpp"
+INCLUDE "engine/menus/naming_screen_util.asm"
+SECTION "IMECodeTable", ROMX
+INCLUDE "dfs/IMECodeTable.asm"

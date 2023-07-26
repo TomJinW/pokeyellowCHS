@@ -265,6 +265,8 @@ ROMX $59
 
 ROMX $60
 	"MISC"
+ROMX $61
+	"IMECodeTable"
 WRAM0
 	"Audio RAM"
 	org $c100
