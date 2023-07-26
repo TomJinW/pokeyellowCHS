@@ -55,12 +55,12 @@ ChangeCharacterSet:
 
 	ret
 
-ResetAlphabet:
-	ld a, 0
-	ld [wIMECurrentPage], a
-	ld [wIMEAlphabetCase], a
-	call ResetPinyinBuffer
-	ret
+; ResetAlphabet:
+; 	ld a, 0
+; 	ld [wIMECurrentPage], a
+; 	ld [wIMEAlphabetCase], a
+; 	call ResetPinyinBuffer
+; 	ret
 
 ConvertTopMenuXPosition:
 	ld a,[wTopMenuItemX]
