@@ -150,6 +150,7 @@ CreditsLoadFont:
 	ld bc, 1 tiles
 	ld a, $ff ; solid black
 	call FillMemory
+	farcall DFSSetAlphabetCache ; CHS_FIX Load Credit font
 	ret
 
 ZeroMemory:
