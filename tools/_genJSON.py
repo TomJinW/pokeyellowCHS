@@ -147,7 +147,7 @@ class bcolors:
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
-print(bcolors.OKGREEN)
+# print(bcolors.OKGREEN)
 
 def removeNone(text):
     if text == None:
@@ -226,6 +226,7 @@ class Instruction():
     sheetTitle = ''
 
 def printLog(type,sheet,instuction,message):
+    return
     global errors
     global warnings
     global infos
@@ -436,31 +437,42 @@ def exportJSON(dict,filePath):
         footer = '\",\"tag\":\"'+ instruction.label + '\\n' + filePath.split('/')[-1] +'\"}},'
         jsonText += header + body + footer
 
-print(xlsxListPath +'：检查 xlsx 合法性...')
-print()
+# print(xlsxListPath +'：检查 xlsx 合法性...')
+# print()
 
-
-
-wb = load_workbook(filename = xlsxListPath)
-for sheet in wb._sheets:
-    outputPath = sheet.cell(row=1, column=1).value
-    if not os.path.isfile(outputPath):
-        if bypassFileCheck == 0:
-            printLog(InfoType.ERROR,sheet,None,outputPath + '\n文件不存在！')
-    origDict = getInstDict(colOrig,sheet,xlsxListPath)
-    TransDict = getInstDict(colTrans,sheet,xlsxListPath)
-    checkDictValid(TransDict,sheet)
-    compareDicts(origDict,TransDict,sheet)
-    exportJSON(TransDict,xlsxListPath)
+def readLines(filename):
+    fileList = []
+    with open(filename) as f:
+        fileList = f.readlines()
+        return fileList
+    
+xlsxfiles = readLines(xlsxListPath)
+for xlsx in xlsxfiles:
+    path = ('xlsx/' + xlsx).replace('\n','')
+    if 'dex' in path or 'data' in path:
+        continue
+    wb = load_workbook(filename = path)
+    for sheet in wb._sheets:
+        outputPath = sheet.cell(row=1, column=1).value
+        if not os.path.isfile(outputPath):
+            if bypassFileCheck == 0:
+                printLog(InfoType.ERROR,sheet,None,outputPath + '\n文件不存在！')
+        origDict = getInstDict(colOrig,sheet,path)
+        TransDict = getInstDict(colTrans,sheet,path)
+        checkDictValid(TransDict,sheet)
+        compareDicts(origDict,TransDict,sheet)
+        exportJSON(TransDict,path)
 
 jsonText += ']'
-# print(jsonText)
-print('检查结束')
-print(bcolors.FAIL)
-print('发现错误：'+ str(errors))
-print(bcolors.WARNING)
-print('发现警告：'+ str(warnings))
-print(bcolors.OKCYAN)
-print('发现提醒：'+ str(infos))
+jsonText = jsonText.replace(',]',']')
+print(jsonText)
+
+# print('检查结束')
+# print(bcolors.FAIL)
+# print('发现错误：'+ str(errors))
+# print(bcolors.WARNING)
+# print('发现警告：'+ str(warnings))
+# print(bcolors.OKCYAN)
+# print('发现提醒：'+ str(infos))
 
 
