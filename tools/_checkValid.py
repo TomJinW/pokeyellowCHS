@@ -266,7 +266,7 @@ def getInstDict(col,sheet,filePath):
         if col - 1 > 0:
             verVal = sheet.cell(row=id, column=col - 1).value
             if verVal != None:
-                if verVal != 'RB' and verVal != 'RGB' and verVal != 'Y':
+                if verVal != 'RB' and verVal != 'RGB' and verVal != 'Y' and verVal != 'YEUS' and verVal != 'YEJP':
                     printLog(InfoType.ERROR,sheet,None,'row '+ str(id) + '\ncol ' + str(col) + '\n的版本符号有误！ver:'+verVal)
         if ':' in label:
             labelrows.append(id)
