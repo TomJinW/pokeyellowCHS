@@ -63,6 +63,14 @@ LoadSAV0:
 	ld [wENGNameMark], a
 .hasENGNameMarkValue
 	ld [wENGNameMark], a
+
+	ld a, [sColorPalette]
+	cp 3
+	jr c, .hasColorPaletteValue
+	ld a, 0
+	ld [wColorPalette], a
+.hasColorPaletteValue
+	ld [wColorPalette], a
 	
 	ld hl, sPlayerName
 	ld de, wPlayerName
@@ -209,6 +217,11 @@ SaveSAVtoSRAM0:
 
 	; ld a, [sENGNameMark]
 	; ld [wENGNameMark], a
+
+	ld hl, wColorPalette
+	ld de, sColorPalette
+	ld bc, 1
+	call CopyData
 
 	ld hl, wENGNameMark
 	ld de, sENGNameMark
