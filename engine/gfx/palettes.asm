@@ -800,7 +800,7 @@ GetPalette:
 GetGBCBasePalAddress::
 ; Input: a = palette ID
 ; Output: de = palette address
-	call GetPalette
+	; call GetPalette
 	push hl
 	ld l, a
 	xor a
