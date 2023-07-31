@@ -34,7 +34,8 @@ sMenuBuffer::
 SECTION "Save Data", SRAM
 
 sENGNameMark::ds 1
-	ds $597
+sColorPalette::ds 1
+	ds $596
 
 sGameData::
 sPlayerName::  ds NAME_LENGTH

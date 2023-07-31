@@ -705,6 +705,7 @@ StartMenu_Option::
 	call ClearScreen
 	call UpdateSprites
 	callfar DisplayOptionMenu
+	; call RunDefaultPaletteCommand ; GBC 色彩刷新用，暂时不开启
 	call LoadScreenTilesFromBuffer2 ; restore saved screen
 	call LoadTextBoxTilePatterns
 	call UpdateSprites
