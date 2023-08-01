@@ -132,7 +132,20 @@
 	```
 	git clone https://github.com/TomJinW/pokeyellowCHS && cd pokeyellowCHS
 	```
-	
+
+- 切换分支：
+	- 要编译「宝可梦版 黄」：
+
+		```
+		git checkout master
+		```
+		
+	- 要编译仿日版「精灵宝可梦版 皮卡丘」：（注意大小写）
+
+		```
+		git checkout CHS_SJP
+		```
+
 - 如果打算使用 [SnDream 修改的 RGBDS 0.6.1](https://github.com/SnDream/rgbds/)，请将上一步编译好的 rgbds-cn 文件夹原样拷贝到 pokeyellowCHS 文件夹根目录里。类似如图所示：
 
 	```
@@ -172,10 +185,14 @@ pokeyellowCHS
 │   README.md
 │   ...    
 └───roms
-│   └───yellow
+│   └───yellowUS
 │ 	│ 	  pokeyellow.gbc 			（宝可梦 黄）
-│ 	│ 	  pokeyellow_vc.gbc		（宝可梦 黄 VC修正版）
+│ 	│ 	  pokeyellow_vc.gbc			（宝可梦 黄 VC修正版）
 │ 	│ 	  pokeyellow_debug.gbc		（宝可梦 黄 Debug版）
+│   └───yellowJP
+│ 	│ 	  pokeyellow.gbc 			（精灵宝可梦 皮卡丘）
+│ 	│ 	  pokeyellow_vc.gbc			（精灵宝可梦 皮卡丘 VC修正版）
+│ 	│ 	  pokeyellow_debug.gbc		（精灵宝可梦 皮卡丘 Debug版）
 └───────
 ```
 
