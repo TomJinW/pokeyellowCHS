@@ -1,4 +1,4 @@
-# 宝可梦 Gen 1 黄 汉化版（施工中，未完成）
+# 宝可梦 Gen 1 黄 汉化版 v1.0
 
 
 [pret/pokeyellow 原始 README.md](README.O.md)
@@ -25,9 +25,10 @@
 - 本项目仅提供 ips 补丁。打上补丁之后原版会变成汉化版。
 - 关于 ips 补丁文件的信息：
 
-|**补丁文件名**|**需要原始文件**|**原始文件 MD5**|
-|:---:|:----:|:----:|
-|pokeyellow.ips| 英文版「宝可梦 黄」| d9290db87b1f0a23b89f99ee4469e34b |
+|**补丁文件名**|**用于汉化**|**需要原始文件**|**原始文件 MD5**|
+|:---:|:----:|:----:|:----:|
+|US.pokeyellow.ips| 「宝可梦 黄」|英文版「宝可梦 黄」| d9290db87b1f0a23b89f99ee4469e34b |
+|SJP.pokeyellow.ips| 「精灵宝可梦 皮卡丘」|英文版「宝可梦 黄」| d9290db87b1f0a23b89f99ee4469e34b |
 
 
 ## 新增相比原版的改动内容
@@ -111,9 +112,10 @@
 - 3DS Virtual Console 通过给原版打补丁的形式对 ROM 进行修正，从而在游戏内启动联机功能时，在 3DS 系统中开启无线联机的菜单。
 - 有关 Virtual Console 补丁文件的说明：
 
- |**补丁文件名**|
-|:---:|
-|pokeyelllow.patch| 
+ |**补丁文件名**|**用于**|
+|:---:|:---:|
+|US.pokeyelllow.patch| 「宝可梦 黄」汉化|
+|SJP.pokeyelllow.patch| 「精灵宝可梦 皮卡丘」汉化|
 
 - 若要自行制作可以联机的 3DS Virtual Console，五个版本的汉化版均可以使用任意一个官方国际版本的 Gen 1 宝可梦 Virtual Console 替换 VC 内的 ROM 和对应的 VC .patch 补丁。
 	
@@ -157,7 +159,8 @@
 
 	- ✅：可以读取存档，可以把宝可登记到 N64 游戏内的参赛队伍中，需要注意 N64 游戏不支持显示中文名字。
 	- ⚠️：如果使用了 N64 游戏内，「Prof. Oak's Lab」的整理宝可梦/盒子等功能，将存档写回 Game Boy 卡带时，N64 游戏内操作过的宝可梦的中文昵称会全部被破坏，在 Game Boy上无法正常显示。中文初训家名称不受影响。如有需要，请使用英文宝可梦昵称。
-	-  ⚠️：「Pokemon Stadium」：GB Tower 功能在模拟器内未通过测试。「Pokemon Stadium 2」：GB Tower 功能在模拟器内通过测试。
+	-  ⚠️：「Pokemon Stadium」：GB Tower 功能在模拟器内未通过测试。
+	-  ⚠️：「Pokemon Stadium 2」：GB Tower 功能在模拟器内通过测试。
 
 - 与日文版 N64 游戏「ポケモンスタジアム」/「ポケモンスタジアム２」/ 「ポケモンスタジアム金銀」联动：❌不兼容。
 
@@ -172,12 +175,12 @@
 
 ## 「汉化组」成员列表
 
-- 破解和程序：星夜之幻，TomJinW
-- 汉化工具：TomJinW，robertking
-- 翻译：夜灵的天空，吃馍法师，无敌阿尔宙斯
-- 美工：卧看微尘（Wokann），小光
-- 校对：小光
-- 测试：无敌阿尔宙斯，小光
+汉化制作人员：
+* 程序：星夜之幻、TomJinW
+* 翻译：吃馍法师、无敌阿尔宙斯、夜灵的天空、TomJinW
+* 汉化工具：robertking、TomJinW
+* 美工：卧看微尘、小光、TomJinW
+* 测试：无敌阿尔宙斯、小光、NELO、TomJinW、SYLVEON、colorcat
 
 
 ## 鸣谢
