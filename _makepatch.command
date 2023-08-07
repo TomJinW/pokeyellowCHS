@@ -18,9 +18,9 @@ cp roms/yellowJP/pokeyellow.1.patch roms/tmp/SJP.pokeyellow.patch
 
 echo
 echo Testing... Applying Patch
-./tools/flips -a roms/tmp/US.pokeyellow.ips roms/pokeyellow.gbc roms/tmp/US.pYellow.gbc
-./tools/flips -a roms/tmp/SJP.pokeyellow.ips roms/pokeyellow.gbc roms/tmp/SJP.pYellow.gbc
+./tools/flips -a roms/tmp/US.pokeyellow.ips roms/pokeyellow.gbc roms/tmp/US.pokeyellow.gbc
+./tools/flips -a roms/tmp/SJP.pokeyellow.ips roms/pokeyellow.gbc roms/tmp/SJP.pokeyellow.gbc
 
-cp roms/yellowUS/pokeyellow_debug.1.gbc roms/tmp/US.pYellow_debug.gbc
-cp roms/yellowJP/pokeyellow_debug.1.gbc roms/tmp/SJP.pYellow_debug.gbc
+cp roms/yellowUS/pokeyellow_debug.1.gbc roms/tmp/US.pokeyellow_debug.gbc
+cp roms/yellowJP/pokeyellow_debug.1.gbc roms/tmp/SJP.pokeyellow_debug.gbc
 ./_compareVersion.command
