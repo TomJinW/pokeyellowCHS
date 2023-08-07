@@ -21,3 +21,5 @@ md5 roms/yellowJP/pokeyellow_vc.2.gbc
 echo
 
 
+md5 roms/tmp/US.pYellow.gbc > hash.Y.txt
+md5 roms/tmp/SJP.pYellow.gbc >> hash.Y.txt
