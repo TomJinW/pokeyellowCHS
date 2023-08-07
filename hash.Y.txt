@@ -1,2 +1,2 @@
-MD5 (roms/tmp/US.pYellow.gbc) = 1c45767a0909711f4e3264253267ad2a
-MD5 (roms/tmp/SJP.pYellow.gbc) = 2f233ca980c292b29207b65edf18fac1
+MD5 (roms/tmp/US.pokeyellow.gbc) = 1c45767a0909711f4e3264253267ad2a
+MD5 (roms/tmp/SJP.pokeyellow.gbc) = 2f233ca980c292b29207b65edf18fac1
