@@ -73,6 +73,8 @@
 
 -  因内部编码不同，从CKN·口袋群星汉化版「精灵宝可梦 皮卡丘」v1.0/v1.1 迁移存档时，**需要使用额外存档转换工具将编码转换成新版游戏编码**。工具会包含在 Release 板块内的补丁中，也可以[前往这里](https://github.com/TomJinW/CKNSaveConverter)另行下载。
 
+- 若需要迁移日文版存档，请参考[https://github.com/TomJinW/PKMNGen1JPUSSavConverter](https://github.com/TomJinW/PKMNGen1JPUSSavConverter)
+
 <br>
 
 ### 游戏内联机相关： 
