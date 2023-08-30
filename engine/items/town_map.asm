@@ -140,7 +140,11 @@ LoadTownMap_Nest:
 	jr z, .shortnest
 	ld de, MonsNestText
 .shortnest
+	ld a, [wENGNameMark]
+	cp 1
+	jr z, .skipAdding
 	call PlaceString
+.skipAdding
 	call DecreaseDFSStack
 	call WaitForTextScrollButtonPress
 	call ExitTownMap
