@@ -479,7 +479,7 @@
 {"Sentence":{"text":"text ……虽说是这么想的，\nline 但是行李已满了的话，\npara @\ntext_ram wOaksAideRewardItemName\nline 就只能下次再给了。\n","note":"","state":"Unmarked","tag":"_OaksAideNoRoomText::\ncore.xlsx"}},
 {"Sentence":{"text":"text 吉利蛋：吉～利～！\n","note":"","state":"Unmarked","tag":"_NurseChanseyText::\ncore.xlsx"}},
 {"Sentence":{"text":"text_ram wTrainerName \nline 换下了@\ntext_ram wEnemyMonNick\ntext ！\n","note":"","state":"Unmarked","tag":"_AIBattleWithdrawText::\ncore.xlsx"}},
-{"Sentence":{"text":"text_ram wTrainerName\ntext 对@\ntext_ram wEnemyMonNick\nline 使用了@\ntext_ram wcd6d\ntext ！\n","note":"","state":"Unmarked","tag":"_AIBattleUseItemText::\ncore.xlsx"}},
+{"Sentence":{"text":"text_ram wTrainerName\ntext 对\nline @\ntext_ram wEnemyMonNick\ncont 使用了@\ntext_ram wcd6d\ntext ！\n","note":"","state":"Unmarked","tag":"_AIBattleUseItemText::\ncore.xlsx"}},
 {"Sentence":{"text":"text 盒子已经满了！\n","note":"","state":"Unmarked","tag":"_BoxFullDebugText::\ncore.xlsx"}},
 {"Sentence":{"text":"text 即将清空盒子。\n","note":"","state":"Unmarked","tag":"_BoxWillBeClearedText::\ncore.xlsx"}},
 {"Sentence":{"text":"text_ram wStringBuffer\ntext 被平安地\nline 传送到@\ntext_ram wLinkEnemyTrainerName \ntext 那里。\n","note":"","state":"Unmarked","tag":"_TradeWentToText::\ncore.xlsx"}},
