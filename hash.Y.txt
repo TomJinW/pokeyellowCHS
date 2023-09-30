@@ -1,2 +1,2 @@
-MD5 (roms/tmp/US.pokeyellow.gbc) = cc9d721255bd2bf55eb8e90256d1521e
-MD5 (roms/tmp/SJP.pokeyellow.gbc) = b34ad3d82ec428d87f63e455a9bb6453
+MD5 (roms/tmp/US.pokeyellow.gbc) = 5592c73401c1be815b31fc0659699b82
+MD5 (roms/tmp/SJP.pokeyellow.gbc) = c75aaad7d888480218e319f1acf7fe26
