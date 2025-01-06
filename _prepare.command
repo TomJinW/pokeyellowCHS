@@ -3,10 +3,10 @@ filepath=$(cd "$(dirname "$0")"; pwd)
 cd "$filepath"
 # mkdir tmp
 
+echo Creating build directory...
+rm -r buildYJP
 mkdir buildYJP
-echo Creating build folder...
-rsync -a --exclude='buildYJP' ./* ./buildYJP/
-
+cp -r src/* buildYJP
 cd buildYJP
 
 # cd /Users/tom/Library/CloudStorage/OneDrive-Personal/Office/pokeyellowCHS
