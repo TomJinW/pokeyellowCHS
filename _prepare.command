@@ -3,11 +3,11 @@ filepath=$(cd "$(dirname "$0")"; pwd)
 cd "$filepath"
 # mkdir tmp
 
-mkdir buildYUS
+mkdir buildYJP
 echo Creating build folder...
-rsync -a --exclude='buildYUS' ./* ./buildYUS/
+rsync -a --exclude='buildYJP' ./* ./buildYJP/
 
-cd buildYUS
+cd buildYJP
 
 # cd /Users/tom/Library/CloudStorage/OneDrive-Personal/Office/pokeyellowCHS
 # cp buildingsA.xlsx $filepath/xlsx/buildingsA.xlsx
