@@ -48,6 +48,7 @@ python3 tools/_importText.py xlsx/ratings.xlsx 5 YEUS $option
 python3 tools/_importDexEntry.py xlsx/dexEntry.xlsx 13 1 $option YEUS
 python3 tools/_importTextData.py xlsx/data.xlsx 1 YEUS $option
 
+patch -p1 < tcc_winport.diff
 chmod +x _build.command
 ./_build.command $option
 
