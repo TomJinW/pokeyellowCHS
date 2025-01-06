@@ -30,7 +30,7 @@
 - 安装所需依赖：
 
 	```
-	sudo apt install git libpng-dev gcc bison pkg-config python3-pip
+	sudo apt install git gcc python3-pip
 	```
 	
 - 安装 openpyxl，用于读取汉化 Excel 文件。
