@@ -44,7 +44,7 @@ wb = load_workbook(filename = xlsxListPath)
 
 def readLines(filename):
     fileList = []
-    with open(filename) as f:
+    with open(filename, encoding='utf-8') as f:
         fileList = f.readlines()
         return fileList
     
@@ -201,8 +201,11 @@ for sheet in wb._sheets:
     
     id = 2
     extraID = 0
+    label2 = ''
     while sheet.cell(row=id, column=mode).value != 'end' and id <= 10000:
         label = sheet.cell(row=id, column=mode).value
+        if removeNone(sheet.cell(row=id, column=mode).value) != '':
+            label2 = removeNone(sheet.cell(row=id, column=mode).value)
         labelType = getLabelType(label)
 
         if mode - 1 > 0:
@@ -276,7 +279,20 @@ for sheet in wb._sheets:
                 if ifContainsChinese(textline):
                     textline = charmap.replaceText(textFormat(content,1,True),charMap,buildMode)
             
+                # if removeNone(inst) == 'next' and removeNone(sheet.cell(row=id + 1, column=mode + 1).value) == '':
+                #     outputText += '\tdex\n'
+                #     outputText +=  label2.replace('::','') + '2::' + '\n'
+                #     outputText += '\ttext ' + textline.replace('\"\"','') + ' \n'
+                #     outputText += '\tdex\n'
                 outputText += '\t' + inst + ' ' + textline.replace('\"\"','') + '\n'
+                if removeNone(inst) == 'text' and removeNone(sheet.cell(row=id - 1, column=mode + 1).value) == '':
+                    outputText += '\tdex\n'
+                    outputText +=  label2.replace('::','') + '2::' + '\n'
+                    sheet.cell(row=id + 1, column=mode + 1).value = 'text'
+                    # outputText += '\ttext ' + textline.replace('\"\"','') + ' \n'
+                    # outputText += '\tdex\n'
+                # else:
+                
                 lengthchk = replaceText(content,textReplacement)
                 if instType == 0:
                     if ifOverLength(lengthchk,18 * 8):
@@ -310,14 +326,18 @@ for sheet in wb._sheets:
                         print(inst)
                         print(content)
                         print(lastContent)
-                        print('未找到 @ 符号！')
+                        print('未找到 @ 符号！') 
                         print('')
                         sheet.cell(row=id - 1, column=mode + 2).fill = warningFill
+                
+
 
             elif instType == -2:
                 outputText += '\t' + inst + '\n'
             else:
                 outputText += '\n'
+            
+
         id += 1
     
     if sheet.cell(row=id, column=mode + 1).value != None:
@@ -325,7 +345,7 @@ for sheet in wb._sheets:
         print(xlsxListPath)
         print(sheet.title)
         print('末尾可能有其他符号！\n')
-    with open(outputPath, 'w') as f:
+    with open(outputPath, 'w', encoding='utf-8') as f:
         outputText = outputText.replace('CURR_DATE','build: ' + getDate()).replace('CURR_TIME',getTime()+', beta.')
         f.write(outputText)
 
