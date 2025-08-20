@@ -56,6 +56,22 @@ LoadSAV0:
 	jp nz, SAVBadCheckSum
 
 .checkSumsMatched
+	ld a, [sENGNameMark]
+	cp 2
+	jr c, .hasENGNameMarkValue
+	ld a, 0
+	ld [wENGNameMark], a
+.hasENGNameMarkValue
+	ld [wENGNameMark], a
+
+	ld a, [sColorPalette]
+	cp 3
+	jr c, .hasColorPaletteValue
+	ld a, 0
+	ld [wColorPalette], a
+.hasColorPaletteValue
+	ld [wColorPalette], a
+	
 	ld hl, sPlayerName
 	ld de, wPlayerName
 	ld bc, NAME_LENGTH
@@ -198,6 +214,20 @@ SaveSAVtoSRAM0:
 	call EnableSRAMAndLatchClockData
 	ld a, $1
 	ld [MBC1SRamBank], a
+
+	; ld a, [sENGNameMark]
+	; ld [wENGNameMark], a
+
+	ld hl, wColorPalette
+	ld de, sColorPalette
+	ld bc, 1
+	call CopyData
+
+	ld hl, wENGNameMark
+	ld de, sENGNameMark
+	ld bc, 1
+	call CopyData
+	
 	ld hl, wPlayerName
 	ld de, sPlayerName
 	ld bc, NAME_LENGTH

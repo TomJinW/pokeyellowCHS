@@ -17,3 +17,5 @@ TradeMons:
 	db GROWLITHE,  DEWGONG,  TRADE_DIALOGSET_HAPPY,     "CEZANNE@@@@"
 	db CUBONE,     MACHOKE,  TRADE_DIALOGSET_HAPPY,     "RICKY@@@@@@"
 	assert_table_length NUM_NPC_TRADES
+
+	INCLUDE "data/events/trades2.asm"

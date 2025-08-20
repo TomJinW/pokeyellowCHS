@@ -124,6 +124,14 @@ PlayShootingStar:
 	push af
 	pop af
 	jr c, .next ; skip the delay if the user interrupted the animation
+	hlcoord 7, 11
+	ld c, 6
+	ld a, $67
+.loop
+    ld [hli], a
+    inc a
+    dec c
+    jr nz, .loop
 	ld c, 40
 	call DelayFrames
 .next

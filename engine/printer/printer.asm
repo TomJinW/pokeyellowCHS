@@ -13,8 +13,12 @@ PrintPokedexEntry:
 	ldh [rIE], a
 	xor a
 	ldh [hAutoBGTransferEnabled], a
+	ld a, 1
+	ld [wMarkPrinter], a
 	call Printer_GetDexEntryRegisters
 	call Printer_StartTransmission
+	ld a, 0
+	ld [wMarkPrinter], a
 	ld a, [wPrinterPokedexMonIsOwned]
 	and a
 	jr z, .not_caught
@@ -27,8 +31,19 @@ PrintPokedexEntry:
 	ld [wcae2], a
 	call Printer_CopyTileMapToPrinterTileBuffer
 	call ClearScreen
-	callfar Pokedex_DrawInterface
-	callfar Pokedex_PlacePokemonList
+	ld a, 1
+	ld [wMarkPrinter], a
+	; callfar Pokedex_DrawInterface
+	; callfar Pokedex_PlacePokemonList
+	; ;CHS Fix clear dex text
+	; hlcoord 0, 0  ;
+	; lb bc, 5, 14 ;
+	; call ClearScreenArea ;
+	; hlcoord 15, 0  ;
+	; lb bc, 5, 5 ;
+	; call ClearScreenArea ;
+	ld a, 0
+	ld [wMarkPrinter], a
 	ld a, $1
 	ldh [hAutoBGTransferEnabled], a
 	call .TryPrintPage
@@ -45,7 +60,7 @@ PrintPokedexEntry:
 	xor a
 	ldh [hAutoBGTransferEnabled], a
 	call Printer_PrepareDexEntryForPrinting
-	ld a, $7
+	ld a, $4
 	call Printer_StartTransmission
 	ld a, $3
 	ld [wcae2], a
@@ -573,6 +588,12 @@ GBPrinter_UpdateStatusMessage:
 	hlcoord 2, 15
 	ld de, .PressBToCancel
 	call PlaceString
+
+	; ld a, $ec ; CHS_FIX
+	; lb bc, 1, 4 ;
+	; hlcoord 8, 15 ;
+	; call DFSStaticize ;
+	
 	ld a, $1
 	ldh [hAutoBGTransferEnabled], a
 	xor a
@@ -661,10 +682,10 @@ Printer_PrepareSurfingMinigameHighScoreTileMap::
 	lb bc, 6, 16
 	call Diploma_Surfing_CopyBox
 	ld de, .PikachusBeachString
-	hlcoord 3, 2
+	hlcoord 4, 2 ;hlcoord 3, 2
 	call PlaceString
 	ld de, .HiScoreString
-	hlcoord 9, 4
+	hlcoord 11, 4;hlcoord 9, 4
 	call PlaceString
 	ld de, .PointsString
 	hlcoord 12, 6
@@ -683,7 +704,7 @@ Printer_PrepareSurfingMinigameHighScoreTileMap::
 	xor a
 .got_name_length
 	ld c, a
-	hlcoord 2, 4
+	hlcoord 4, 4;hlcoord 2, 4
 	add hl, bc
 	call PlaceString
 	call CopySurfingMinigameScore
@@ -789,12 +810,27 @@ PrintPCBox_DrawPage1:
 	call FillMemory
 	call PrintPCBox_DrawLeftAndRightBorders
 	call PrintPCBox_DrawTopBorder
-	hlcoord 4, 4
+	hlcoord 7, 4
 	ld de, .PokemonListString
 	call PlaceString
-	hlcoord 7, 6
+
+
+
+	hlcoord 7, 6 ;hlcoord 7, 6
 	ld de, .BoxString
 	call PlaceString
+
+	ld a, $70 ; CHS_FIX p38
+	lb bc, 1, 5 ;
+	hlcoord 7, 4 ;
+	call DFSStaticize ;
+	ld a, $03 ; CHS_FIX p38
+	lb bc, 1, 2 ;
+	hlcoord 8, 6 ;
+	call DFSStaticize ;
+	ld a, $05 ;set init block
+	ld [wTempSpace2], a
+
 	hlcoord 11, 6
 	ld a, [wCurrentBoxNum]
 	and $7f
@@ -810,7 +846,13 @@ PrintPCBox_DrawPage1:
 	add "1"
 .placed_box_number
 	ld [hl], a
-	hlcoord 4, 9
+
+	ld a, [wENGNameMark]
+	cp 1
+	hlcoord 1, 9; hlcoord 4, 11
+	jr nz, .CHS
+	hlcoord 1, 8; hlcoord 4, 11
+.CHS
 	ld de, wBoxSpecies
 	ld c, $3
 	call PrintPCBox_PlaceBoxMonInfo
@@ -823,10 +865,19 @@ PrintPCBox_DrawPage2:
 	call ClearScreen
 	call PrintPCBox_PlaceHorizontalLines
 	call PrintPCBox_DrawLeftAndRightBorders
+	ld a, $05 ;set init block
+	ld [wTempSpace2], a
 	ld a, [wBoxDataStart]
 	cp 4
 	ret c
-	hlcoord 4, 0
+
+	ld a, [wENGNameMark]
+	cp 1
+	hlcoord 1, 1; hlcoord 4, 11
+	jr nz, .CHS
+	hlcoord 1, 0; hlcoord 4, 11
+.CHS
+
 	ld de, wBoxSpecies + 3
 	ld c, 6
 	call PrintPCBox_PlaceBoxMonInfo
@@ -836,10 +887,18 @@ PrintPCBox_DrawPage3:
 	call ClearScreen
 	call PrintPCBox_PlaceHorizontalLines
 	call PrintPCBox_DrawLeftAndRightBorders
+	ld a, $05 ;set init block
+	ld [wTempSpace2], a
 	ld a, [wBoxDataStart]
 	cp 10
 	ret c
-	hlcoord 4, 0
+
+	ld a, [wENGNameMark]
+	cp 1
+	hlcoord 1, 1; hlcoord 4, 11
+	jr nz, .CHS
+	hlcoord 1, 0; hlcoord 4, 11
+.CHS
 	ld de, wBoxSpecies + 9
 	ld c, 6
 	call PrintPCBox_PlaceBoxMonInfo
@@ -849,6 +908,8 @@ PrintPCBox_DrawPage4:
 	call ClearScreen
 	call PrintPCBox_PlaceHorizontalLines
 	call PrintPCBox_DrawLeftAndRightBorders
+	ld a, $05 ;set init block
+	ld [wTempSpace2], a
 	hlcoord 0, 15
 	call PrintPCBox_DrawBottomBorderAtHL
 	hlcoord 0, 16
@@ -858,11 +919,39 @@ PrintPCBox_DrawPage4:
 	ld a, [wBoxDataStart]
 	cp 16
 	ret c
-	hlcoord 4, 0
+
+	ld a, [wENGNameMark]
+	cp 1
+	hlcoord 1, 1; hlcoord 4, 11
+	jr nz, .CHS
+	hlcoord 1, 0; hlcoord 4, 11
+.CHS
 	ld de, wBoxSpecies + 15
 	ld c, 5
 	call PrintPCBox_PlaceBoxMonInfo
 	ret
+
+SubtractHLbyBC:
+	ld a, h             ; Move the high byte of value1 to the accumulator
+	sub b               ; Subtract the high byte of value2 from the accumulator
+	ld h, a             ; Store the result in the high byte of HL
+	ld a, l             ; Move the low byte of value1 to the accumulator
+	sbc a, c            ; Subtract the low byte of value2 along with carry from the accumulator
+	ld l, a             ; Store the result in the low byte of HL
+	ret
+
+ClearString:
+	db $01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$7f,"@"
+
+StoreNamesInBuf:
+	ld a,[wTempSpace2]
+	cp $60
+	jr nc, .skipStoring
+	lb bc, 2, 10;
+	call DFSStaticize;
+	ld [wTempSpace2],a
+.skipStoring
+	ret 
 
 PrintPCBox_PlaceBoxMonInfo:
 .loop
@@ -894,6 +983,11 @@ PrintPCBox_PlaceBoxMonInfo:
 	pop hl
 	call PlaceString
 	push hl
+
+	ld bc, SCREEN_WIDTH        ; Load the 8-bit value into the accumulator
+	call SubtractHLbyBC
+	call StoreNamesInBuf
+	
 	ld hl, wBoxMonNicks
 	ld bc, NAME_LENGTH
 	ld a, [wBoxNumString]
@@ -901,11 +995,40 @@ PrintPCBox_PlaceBoxMonInfo:
 	ld e, l
 	ld d, h
 	pop hl
-	ld bc, SCREEN_WIDTH + 1
+	ld bc, 7 + SCREEN_WIDTH;ld bc, SCREEN_WIDTH + 1
 	add hl, bc
-	ld [hl], " "
+	ld [hl], "/" ;ld [hl], " "
 	inc hl
+
+	ld a, [wENGNameMark]
+	cp 1
+	ld bc, 0
+	jr nz, .CHS
+	ld bc, SCREEN_WIDTH
+.CHS
+	add hl, bc
 	call PlaceString
+	push af
+	push bc
+
+	push hl
+	ld bc, SCREEN_WIDTH        ; Load the 8-bit value into the accumulator
+	call SubtractHLbyBC
+	call StoreNamesInBuf
+	pop hl
+
+	; ld bc, 9
+	; add hl, bc
+	; ld a, [hl]
+	; cp $7c
+	; jr z, .noNeedtoChange
+	; call HandleOverLengthName
+.noNeedtoChange
+
+
+	pop bc
+	pop af
+
 	ld hl, wBoxNumString
 	inc [hl]
 	pop de
@@ -918,6 +1041,30 @@ PrintPCBox_PlaceBoxMonInfo:
 
 .done
 	ret
+
+; HandleOverLengthName:
+; 	ld [hl], $7c
+; 	ld bc, 10        ; Load the 8-bit value into the accumulator
+; 	call SubtractHLbyBC
+; 	ld [hl], $7f
+; 	inc hl
+; 	ld de,ClearString
+; 	call PlaceString
+; 	ld bc, SCREEN_WIDTH - 2
+; 	add hl, bc
+; 	ld [hl], "/"
+; 	inc hl
+
+; 	push hl
+; 	ld hl, wBoxMonNicks
+; 	ld bc, NAME_LENGTH
+; 	ld a, [wBoxNumString]
+; 	call AddNTimes
+; 	ld e, l
+; 	ld d, h
+; 	pop hl
+; 	call PlaceString
+; 	ret
 
 PrintPCBox_DrawTopBorder:
 	hlcoord 0, 0
@@ -963,10 +1110,10 @@ PrintPCBox_DrawBottomBorderAtHL:
 	ret
 
 PrintPCBox_PlaceHorizontalLines:
-	hlcoord 4, 0
+	hlcoord 1, 0 ;hlcoord 4, 0
 	ld c, 6
 	call .PlaceHorizontalLine
-	hlcoord 6, 1
+	hlcoord 9, 0 ;hlcoord 6, 1
 	ld c, 6
 .PlaceHorizontalLine:
 .loop
@@ -983,4 +1130,4 @@ PrintPCBox_PlaceHorizontalLines:
 	ret
 
 .HorizontalLineString:
-	db "----------@"
+	db "@"

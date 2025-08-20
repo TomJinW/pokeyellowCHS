@@ -1,6 +1,7 @@
 roms := \
 	pokeyellow.gbc \
-	pokeyellow_debug.gbc
+	pokeyellow_debug.gbc \
+	pokeyellow.patch
 patches := \
 	pokeyellow.patch
 
@@ -80,8 +81,8 @@ compare: $(roms) $(patches)
 tools:
 	$(MAKE) -C tools/
 
-
-RGBASMFLAGS = -hL -Q8 -P includes.asm -Weverything -Wnumeric-string=2 -Wtruncation=1
+CHAR_FLAGS = 
+RGBASMFLAGS = -hL -Q8 -P includes.asm -Weverything -Wnumeric-string=2 -Wtruncation=1 $(CHAR_FLAGS)
 # Create a sym/map for debug purposes if `make` run with `DEBUG=1`
 ifeq ($(DEBUG),1)
 RGBASMFLAGS += -E

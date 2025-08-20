@@ -777,9 +777,30 @@ InitGBCPalettes:
 
 	ret
 
+GetPalette:
+	push bc
+	ld c, a
+	ld a,[wColorPalette]
+	cp 1
+	jr z, .BW
+	cp 2
+	jr z, .BW
+	ld a, c
+	pop bc
+	ret
+.JPN
+	ld a, 14
+	pop bc
+	ret
+.BW
+	ld a, 13
+	pop bc
+	ret
+
 GetGBCBasePalAddress::
 ; Input: a = palette ID
 ; Output: de = palette address
+	; call GetPalette
 	push hl
 	ld l, a
 	xor a

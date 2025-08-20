@@ -1524,25 +1524,38 @@ INCBIN "gfx/surfing_pikachu/unknown_f8946.map"
 	ret
 
 SurfingMinigame_PrintTextHiScore:
-	ld hl, .Hi_Score
-	decoord 6, 8
-	ld bc, $9
-	call CopyData
+	; ld hl, .Hi_Score
+	; decoord 6, 8
+	; ld bc, $9
+	; call CopyData
+	ld de, .Hi_Score
+	hlcoord 6, 7
+	lb bc, 2, 3
+	call CopyBox2
 	ret
 
 .Hi_Score:
-	db $20,$2e,$2f,$30,$31,$2c,$32,$23,$33 ; Hi-Score!!
+	db $38,$39,$26,$3A,$1F,$2b
+	; db $20,$2e,$2f,$30,$31,$2c,$32,$23,$33 ; Hi-Score!!
 
 SurfingMinigame_WriteHPLeft:
+
+	ld hl, .HP_Left2
+	decoord 5, 2
+	ld bc, $3
+	call CopyData
+
 	ld hl, .HP_Left
-	decoord 2, 2
-	ld bc, $7
+	decoord 2, 3; decoord 2, 2
+	ld bc, $6 ;ld bc, $7
 	call CopyData
 	call SurfingMinigame_BCDPrintHPLeft
 	ret
-
+.HP_Left2:
+	db $22,$23,$24
 .HP_Left:
-	db $20,$21,$ff,$22,$23,$24,$25 ; HP Left
+	db $20,$21,$ff,$27,$28,$29
+	; db $20,$21,$ff,$22,$23,$24,$25 ; HP Left
 
 SurfingMinigame_AddRemainingHPToTotal:
 	ld c, 99
@@ -1569,33 +1582,46 @@ SurfingMinigame_AddRemainingHPToTotal:
 	scf
 	ret
 
+TileMapPts:
+	db $25,$26,$2A,$2B
+
 SurfingMinigame_BCDPrintHPLeft:
-	hlcoord 10, 2
+	hlcoord 10, 3 ;hlcoord 10, 2
 	ld de, wSurfingMinigamePikachuHP + 1
 	ld a, [de]
 	call SurfingPikachu_PlaceBCDNumber
 	inc hl
 	ld a, [de]
 	call SurfingPikachu_PlaceBCDNumber
-	inc hl
-	inc hl
-	ld [hl], $21 ; P
-	inc hl
-	ld [hl], $25 ; t
-	inc hl
-	ld [hl], $26 ; s
+
+	ld de, TileMapPts
+	hlcoord $F, 2
+	lb bc, 2, 2
+	call CopyBox2
+	; inc hl
+	; inc hl
+	; ld [hl], $21 ; P
+	; inc hl
+	; ld [hl], $25 ; t
+	; inc hl
+	; ld [hl], $26 ; s
 	ret
 
 SurfingMinigame_WriteRadness:
-	ld hl, .Radness
-	decoord 2, 4
-	ld bc, $7
-	call CopyData
+	; ld hl, .Radness
+	; decoord 2, 4
+	; ld bc, $7
+	; call CopyData
+	ld de, .Radness
+	hlcoord 2, 4
+	lb bc, 2, 3
+	call CopyBox2
 	call SurfingMinigame_BCDPrintRadness
 	ret
 
 .Radness:
-	db $27,$28,$29,$2a,$23,$26,$26 ; Radness
+	db $2C,$2D,$2E,$2F,$30,$31 ; Radness
+	; db $27,$28,$29,$2a,$23,$26,$26 ; Radness
 
 SurfingMinigame_AddRadnessToTotal:
 	ld c, 99
@@ -1633,18 +1659,23 @@ SurfingMinigame_AddRadnessToTotal:
 
 SurfingMinigame_BCDPrintRadness:
 	ld a, [wSurfingMinigameRadnessScore + 1]
-	hlcoord 10, 4
+	hlcoord 10, 5 ;hlcoord 10, 4
 	call SurfingPikachu_PlaceBCDNumber
 	ld a, [wSurfingMinigameRadnessScore]
-	hlcoord 12, 4
+	hlcoord 12, 5 ;hlcoord 12, 4
 	call SurfingPikachu_PlaceBCDNumber
-	inc hl
-	inc hl
-	ld [hl], $21 ; P
-	inc hl
-	ld [hl], $25 ; t
-	inc hl
-	ld [hl], $26 ; s
+
+	ld de, TileMapPts
+	hlcoord $F, 4
+	lb bc, 2, 2
+	call CopyBox2
+	; inc hl
+	; inc hl
+	; ld [hl], $21 ; P
+	; inc hl
+	; ld [hl], $25 ; t
+	; inc hl
+	; ld [hl], $26 ; s
 	ret
 
 SurfingMinigame_AddPointsToTotal:
@@ -1664,31 +1695,41 @@ SurfingMinigame_AddPointsToTotal:
 
 SurfingMinigame_BCDPrintTotalScore:
 	ld a, [wSurfingMinigameTotalScore + 1]
-	hlcoord 10, 6
+	hlcoord 10, 7 ;hlcoord 10, 6
 	call SurfingPikachu_PlaceBCDNumber
 	ld a, [wSurfingMinigameTotalScore]
-	hlcoord 12, 6
+	hlcoord 12, 7 ;hlcoord 12, 6
 	call SurfingPikachu_PlaceBCDNumber
-	inc hl
-	inc hl
-	ld [hl], $21 ; P
-	inc hl
-	ld [hl], $25 ; t
-	inc hl
-	ld [hl], $26 ; s
+
+	ld de, TileMapPts
+	hlcoord $F, 6
+	lb bc, 2, 2
+	call CopyBox2
+	; inc hl
+	; inc hl
+	; ld [hl], $21 ; P
+	; inc hl
+	; ld [hl], $25 ; t
+	; inc hl
+	; ld [hl], $26 ; s
 	ret
 
 SurfingMinigame_WriteTotal:
-	ld hl, .Total
-	decoord 2, 6
-	ld bc, $5
-	call CopyData
+	; ld hl, .Total
+	; decoord 2, 6
+	; ld bc, $5
+	; call CopyData
+	ld de, .Total
+	hlcoord 2, 6
+	lb bc, 2, 3
+	call CopyBox2
 	call SurfingMinigame_BCDPrintRadness
 	call SurfingMinigame_BCDPrintTotalScore
 	ret
 
 .Total:
-	db $2b,$2c,$25,$28,$2d ; Total
+	db $32,$33,$34,$35,$36,$37 ; Total
+	; db $2b,$2c,$25,$28,$2d ; Total
 
 DidPlayerGetAHighScore:
 	ld hl, wSurfingMinigameHiScore + 1
@@ -2333,9 +2374,14 @@ SurfingPikachuMinigameIntro:
 	ldh [hAutoBGTransferEnabled], a
 	call ClearObjectAnimationBuffers
 	ld hl, SurfingPikachu1Graphics3
-	ld de, $8800
+	ld de, $8800 
 	ld bc, $900
 	ld a, BANK(SurfingPikachu1Graphics3)
+	call FarCopyData
+	ld hl, SurfingPikachu1Graphics4
+	ld de, $9200 
+	ld bc, $400
+	ld a, BANK(SurfingPikachu1Graphics4)
 	call FarCopyData
 	ld a, LOW(SurfingPikachuSpawnStateDataPointer)
 	ld [wAnimatedObjectSpawnStateDataPointer], a
@@ -2354,7 +2400,7 @@ SurfingPikachuMinigameIntro:
 	ld a, HIGH(SurfingPikachuFrames)
 	ld [wAnimatedObjectFramesDataPointer + 1], a
 	ld a, $c
-	lb de, $74, $58
+	lb de, $74 + 8, $58 ; CHS_Fix Move Pikachu 8px down for more text
 	call SpawnAnimatedObject
 	call DrawSurfingPikachuMinigameIntroBackground
 	xor a
@@ -2406,21 +2452,42 @@ DrawSurfingPikachuMinigameIntroBackground:
 	ld de, Tilemap_f91c8
 	hlcoord 4, 0
 	lb bc, 6, 12
-	call .CopyBox
+	call CopyBox2
 	hlcoord 3, 7
 	lb bc, 3, 15
-	call .FillBoxWithFF
-	ld hl, Tilemap_f91ac
-	decoord 3, 7
-	ld bc, 15
-	call CopyData
-	ld hl, Tilemap_f91bb
-	decoord 4, 9
-	ld bc, 13
-	call CopyData
-	ret
+	call CopyBox2.FillBoxWithFF
+	; ld hl, Tilemap_f91ac
+	; decoord 3, 7
+	; ld bc, 15
+	; call CopyData
+	; ld hl, Tilemap_f91bb
+	; decoord 4, 9
+	; ld bc, 13
 
-.CopyBox:
+	ld de, Tilemap_f91ac
+	hlcoord 2, 7
+	lb bc, 4, 16
+	call CopyBox2
+
+	; ld hl, Tilemap_f91ac
+	; decoord 2, 7
+	; ld bc, 16
+	; call CopyData
+	; ld hl, Tilemap_f91bb
+	; decoord 2, 8
+	; ld bc, 16
+	; call CopyData
+	; ld hl, Tilemap_line3
+	; decoord 2, 9
+	; ld bc, 16
+	; call CopyData
+	; ld hl, Tilemap_line4
+	; decoord 2, 10
+	; ld bc, 16
+	; call CopyData
+	ret
+CopyBox2:
+; .CopyBox:
 .copy_row
 	push bc
 	push hl
@@ -2457,8 +2524,10 @@ DrawSurfingPikachuMinigameIntroBackground:
 
 Tilemap_f90bc: INCBIN "gfx/surfing_pikachu/unknown_f90bc.map"
 Tilemap_f91ac: INCBIN "gfx/surfing_pikachu/unknown_f91ac.map"
-Tilemap_f91bb: INCBIN "gfx/surfing_pikachu/unknown_f91bb.map"
+; Tilemap_f91bb: INCBIN "gfx/surfing_pikachu/unknown_f91bb.map"
 Tilemap_f91c8: INCBIN "gfx/surfing_pikachu/unknown_f91c8.map"
+; Tilemap_line3: INCBIN "gfx/surfing_pikachu/unknown_line3.map"
+; Tilemap_line4: INCBIN "gfx/surfing_pikachu/unknown_line4.map"
 
 SurfingMinigame_UpdateLYOverrides:
 	ld hl, wLYOverrides + $10

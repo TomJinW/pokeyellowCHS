@@ -464,7 +464,7 @@ WarpFound2::
 	ld a, [wCurMap]
 	ld [wLastMap], a
 	ld a, [wCurMapWidth]
-	ld [wUnusedD366], a ; not read
+	; ld [wUnusedD366], a ; not read
 	ldh a, [hWarpDestinationMap]
 	ld [wCurMap], a
 	cp ROCK_TUNNEL_1F
@@ -865,7 +865,14 @@ LoadTilesetTilePatternData::
 	ld a, [wTilesetGfxPtr + 1]
 	ld h, a
 	ld de, vTileset
-	ld bc, $600
+
+	ld a, [wTempSpace] ; CHS_FIX 04 
+	cp 1 ;
+	ld bc, $600 ;
+	jr nz, .finish ;
+	ld bc, $300 ;
+.finish ;
+	
 	ld a, [wTilesetBank]
 	jp FarCopyData
 
@@ -1805,7 +1812,7 @@ Func_0db5:: ; XXX
 	farcall LoadMissableObjectData
 asm_0dbd:
 	ld a, [wCurMapTileset]
-	ld [wUnusedD119], a
+	; ld [wUnusedD119], a
 	ld a, [wCurMap]
 	call SwitchToMapRomBank
 	ld a, [wCurMapTileset]
@@ -2033,7 +2040,7 @@ ResetMapVariables::
 	ldh [hSCY], a
 	ldh [hSCX], a
 	ld [wWalkCounter], a
-	ld [wUnusedD119], a
+	; ld [wUnusedD119], a
 	ld [wSpriteSetID], a
 	ld [wWalkBikeSurfStateCopy], a
 	ret

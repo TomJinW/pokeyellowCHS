@@ -168,6 +168,8 @@ ENDC
 	jr .exitSideMenu
 
 .chosePrint
+	; ;CHS Fix clear dex text
+	call ClearPrintDexMenu ;
 	ldh a, [hTileAnimations]
 	push af
 	xor a
@@ -183,6 +185,17 @@ ENDC
 	ld b, $3
 	jr .exitSideMenu
 
+ClearPrintDexMenu:
+	hlcoord 0, 0  ;
+	lb bc, 18, 14 ;
+	call ClearScreenArea ;
+	hlcoord 15, 0  ;
+	lb bc, 6, 5 ;
+	call ClearScreenArea ;
+	hlcoord 15, 7  ;
+	lb bc, 11, 5 ;
+	call ClearScreenArea ;
+	ret
 ; handles the list of pokemon on the left of the pokedex screen
 ; sets carry flag if player presses A, unsets carry flag if player presses B
 HandlePokedexListMenu:
@@ -261,6 +274,18 @@ HandlePokedexListMenu:
 	and a
 	ret
 
+PushDexMenuText:
+	push af
+	ld a, [wMarkPrinter]
+	cp 1
+	jr z, .skipForPrinter
+	pop af
+	call DFSStaticize
+	ret
+.skipForPrinter
+	pop af
+	ret
+
 Pokedex_DrawInterface:
 	xor a
 	ldh [hAutoBGTransferEnabled], a
@@ -292,18 +317,72 @@ Pokedex_DrawInterface:
 	hlcoord 16, 5
 	lb bc, 1, 3
 	call PrintNumber ; print number of owned pokemon
+
 	hlcoord 16, 1
 	ld de, PokedexSeenText
 	call PlaceString
+	ld a, $31
+	lb bc, 2, 3
+	coord hl, 16, 0
+	call PushDexMenuText
+
 	hlcoord 16, 4
 	ld de, PokedexOwnText
 	call PlaceString
+	ld a, $37
+	lb bc, 2, 3
+	coord hl, 16, 3
+	call PushDexMenuText
+
 	hlcoord 1, 1
 	ld de, PokedexContentsText
 	call PlaceString
+	ld a, $3D
+	lb bc, 2, 3
+	coord hl, 1, 0
+	call PushDexMenuText
+
 	hlcoord 16, 8
-	ld de, PokedexMenuItemsText
+	ld de, PokedexMenuItemsText1
 	call PlaceString
+	ld a, $43
+	lb bc, 2, 3
+	coord hl, 16, 7
+	call PushDexMenuText
+
+	hlcoord 16, 10
+	ld de, PokedexMenuItemsText2
+	call PlaceString
+	ld a, $49
+	lb bc, 2, 3
+	coord hl, 16, 9
+	call PushDexMenuText
+
+	hlcoord 16, 12
+	ld de, PokedexMenuItemsText3
+	call PlaceString
+	ld a, $4F
+	lb bc, 2, 3
+	coord hl, 16, 11
+	call PushDexMenuText
+
+	hlcoord 16, 14
+	ld de, PokedexMenuItemsText4
+	call PlaceString
+	ld a, $55
+	lb bc, 2, 3
+	coord hl, 16, 13
+	call PushDexMenuText
+
+	hlcoord 16, 16
+	ld de, PokedexMenuItemsText5
+	call PlaceString
+	ld a, $5B
+	lb bc, 2, 3
+	coord hl, 16, 15
+	call PushDexMenuText
+
+
 ; find the highest pokedex number among the pokemon the player has seen
 	ld hl, wPokedexSeenEnd - 1
 	ld b, (wPokedexSeenEnd - wPokedexSeen) * 8 + 1
@@ -344,12 +423,16 @@ PokedexOwnText:
 PokedexContentsText:
 	db "CONTENTS@"
 
-PokedexMenuItemsText:
-	db   "DATA"
-	next "CRY"
-	next "AREA"
-	next "PRNT"
-	next "QUIT@"
+PokedexMenuItemsText1:
+	db "DATA@"
+PokedexMenuItemsText2:
+	db "CRY@"
+PokedexMenuItemsText3:
+	db "AREA@"
+PokedexMenuItemsText4:
+	db "PRNT@"
+PokedexMenuItemsText5:
+	db "QUIT@"
 
 Pokedex_PlacePokemonList:
 	xor a
@@ -397,9 +480,16 @@ Pokedex_PlacePokemonList:
 	ld hl, wPokedexSeen
 	call IsPokemonBitSet
 	jr nz, .getPokemonName ; if the player has seen the pokemon
+	ld a, [wENGNameMark]
+	cp 1
 	ld de, .dashedLine ; print a dashed line in place of the name if the player hasn't seen the pokemon
+	jr nz, .CHS
+	ld de, .dashedLineENG ; print a dashed line in place of the name if the player hasn't seen the pokemon
+.CHS
 	jr .skipGettingName
 .dashedLine ; for unseen pokemon in the list
+	db "--@"
+.dashedLineENG ; for unseen pokemon in the list
 	db "----------@"
 .getPokemonName
 	call PokedexToIndex
@@ -461,12 +551,28 @@ ShowPokedexDataInternal:
 	pop af
 	ld [wd11e], a
 	call DrawDexEntryOnScreen
-	call c, Pokedex_PrintFlavorTextAtRow11
+	jr nc, .waitForButtonPress
+	push hl
+	call Pokedex_PrintFlavorTextAtRow11
+	pop hl
+	ld bc, 5
+	add hl, bc
+	bccoord 1,13
+	call Pokedex_PrintFlavorTextAtBC
+
 .waitForButtonPress
+	call Delay3
+	call GBPalNormal
+	call GetMonHeader ; load pokemon picture location
+	hlcoord 1, 1
+	call LoadFlippedFrontSpriteByMonIndex ; draw pokemon picture
+	ld a, [wcf91]
+	call PlayCry ; play pokemon cry
+.waitForButtonPress2
 	call JoypadLowSensitivity
 	ldh a, [hJoy5]
 	and A_BUTTON | B_BUTTON
-	jr z, .waitForButtonPress
+	jr z, .waitForButtonPress2
 	pop af
 	ldh [hTileAnimations], a
 	call GBPalWhiteOut
@@ -496,7 +602,7 @@ PokedexDataDividerLine:
 
 DrawDexEntryOnScreen:
 	call ClearScreen
-
+	
 	hlcoord 0, 0
 	ld de, 1
 	lb bc, $64, SCREEN_WIDTH
@@ -536,6 +642,27 @@ DrawDexEntryOnScreen:
 	hlcoord 9, 2
 	call PlaceString
 
+	;CHS_Fix 26 Pokedex
+	ld a, $31
+	lb bc, 8, 3 ;
+	coord hl, 9, 1 ;
+	call DFSStaticize ;
+
+	ld a, $43
+	lb bc, 1, 1 ;
+	coord hl, 17, 8 ;
+	call DFSStaticize ;
+
+	ld a, $44
+	lb bc, 1, 2 ;
+	coord hl, $C + $5, 2 ;
+	call DFSStaticize ;
+
+	ld a, $51
+	lb bc, 2, 5 ;
+	coord hl, $C, 1 ;
+	call DFSStaticize ;
+
 	ld hl, PokedexEntryPointers
 	ld a, [wd11e]
 	dec a
@@ -549,6 +676,31 @@ DrawDexEntryOnScreen:
 
 	hlcoord 9, 4
 	call PlaceString ; print species name
+
+	push af
+	push bc
+	push de
+	push hl
+
+	ld a, $47
+	lb bc, 2, 5 ;
+	coord hl, $C, 3 ;
+	call DFSStaticize ;
+	
+	ld a, $5B
+	lb bc, 2, 3 ;
+	coord hl, 9, 3 ;
+	call DFSStaticize ;
+
+	ld a, $45
+	lb bc, 2, 1 ;
+	coord hl, $11, 3 ;
+	call DFSStaticize ;
+
+	pop hl
+	pop de
+	pop bc
+	pop af
 
 	ld h, b
 	ld l, c
@@ -574,23 +726,27 @@ DrawDexEntryOnScreen:
 	ld [wd0b5], a
 	pop de
 
+	ld a,[wMarkPrinter]
+	cp 0
+	jr z, .notUsingPrinter
 	push af
 	push bc
 	push de
 	push hl
 
-	call Delay3
-	call GBPalNormal
+	; call Delay3
+	; call GBPalNormal
 	call GetMonHeader ; load pokemon picture location
 	hlcoord 1, 1
 	call LoadFlippedFrontSpriteByMonIndex ; draw pokemon picture
-	ld a, [wcf91]
-	call PlayCry ; play pokemon cry
+	; ld a, [wcf91]
+	; call PlayCry ; play pokemon cry
 
 	pop hl
 	pop de
 	pop bc
 	pop af
+.notUsingPrinter
 
 	ld a, c
 	and a
@@ -598,17 +754,17 @@ DrawDexEntryOnScreen:
 
 	inc de ; de = address of feet (height)
 	ld a, [de] ; reads feet, but a is overwritten without being used
-	hlcoord 12, 6
+	hlcoord 13, 6
 	lb bc, 1, 2
 	call PrintNumber ; print feet (height)
-	ld a, "′"
+	ld a, $F2
 	ld [hl], a
 	inc de
 	inc de ; de = address of inches (height)
-	hlcoord 15, 6
-	lb bc, LEADING_ZEROES | 1, 2
+	hlcoord 10, 6
+	lb bc, 1, 1
 	call PrintNumber ; print inches (height)
-	ld a, "″"
+	ld a, $61
 	ld [hl], a
 ; now print the weight (note that weight is stored in tenths of pounds internally)
 	inc de
@@ -669,14 +825,14 @@ Pokedex_PrepareDexEntryForPrinting:
 	hlcoord 19, 0
 	ld b, $67
 	call DrawTileLine
-	hlcoord 0, 13
+	hlcoord 0, 7
 	ld de, $1
 	lb bc, $6f, SCREEN_WIDTH
 	call DrawTileLine
 	ld a, $6c
-	ldcoord_a 0, 13
+	ldcoord_a 0, 7
 	ld a, $6e
-	ldcoord_a 19, 13
+	ldcoord_a 19, 7
 	ld a, [wPrinterPokedexEntryTextPointer]
 	ld l, a
 	ld a, [wPrinterPokedexEntryTextPointer + 1]
@@ -685,10 +841,42 @@ Pokedex_PrepareDexEntryForPrinting:
 	ldh a, [hUILayoutFlags]
 	set 3, a
 	ldh [hUILayoutFlags], a
-	call Pokedex_PrintFlavorTextAtBC
+	call Pokedex_PrintFlavorTextAtBC 
 	ldh a, [hUILayoutFlags]
 	res 3, a
 	ldh [hUILayoutFlags], a
+
+	push af
+	push bc
+	push de
+	push hl
+
+	ld a, $31 ; CHS_FIX p38
+	lb bc, 2, 12 ;
+	hlcoord 1, 0 ;
+	call DFSStaticize
+
+	ld a, [wPrinterPokedexEntryTextPointer]
+	ld l, a
+	ld a, [wPrinterPokedexEntryTextPointer + 1]
+	ld h, a
+	ld bc, 5
+	add hl, bc
+	; ld d, h
+	; ld e, l
+
+	bccoord 1, 3
+	ldh a, [hUILayoutFlags]
+	set 3, a
+	ldh [hUILayoutFlags], a
+	call Pokedex_PrintFlavorTextAtBC 
+	ldh a, [hUILayoutFlags]
+	res 3, a
+	ldh [hUILayoutFlags], a
+	pop af
+	pop bc
+	pop de
+	pop hl
 	ret
 
 ; draws a line of tiles
@@ -697,6 +885,16 @@ Pokedex_PrepareDexEntryForPrinting:
 ; c = number of tile ID's to write
 ; de = amount to destination address after each tile (1 for horizontal, 20 for vertical)
 ; hl = destination address
+; GetLastLine: 
+; 	ld bc, 1
+; 	add hl, bc
+; 	ld a, [hl]
+; 	cp $5f 
+; 	jr nz, GetLastLine
+; 	ld bc, 1
+; 	add hl, bc
+; 	ret
+
 DrawTileLine:
 	push bc
 	push de

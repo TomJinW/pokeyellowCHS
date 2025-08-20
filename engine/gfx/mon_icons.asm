@@ -179,11 +179,16 @@ WriteMonPartySpriteOAMByPartyIndex:
 	ld a, [hl]
 	call GetPartyMonSpriteID
 	ld [wOAMBaseTile], a
-	call WriteMonPartySpriteOAM
+	call .coord_x_fix
+	; call WriteMonPartySpriteOAM
 	pop bc
 	pop de
 	pop hl
 	ret
+.coord_x_fix
+	push af
+	ld c, $0e
+	jp WriteMonPartySpriteOAM.coord_x_fix
 
 .asm_7191f
 	ld hl, wShadowOAM
@@ -204,6 +209,18 @@ WriteMonPartySpriteOAMBySpecies:
 	call GetPartyMonSpriteID
 	ld [wOAMBaseTile], a
 	jr WriteMonPartySpriteOAM
+
+WriteMonPartySpriteOAMBySpeciesNamingScreen:
+; Write OAM blocks for the party sprite of the species in
+; [wMonPartySpriteSpecies].
+	xor a
+	ldh [hPartyMonIndex], a
+	ld a, [wMonPartySpriteSpecies]
+	call GetPartyMonSpriteID
+	ld [wOAMBaseTile], a
+	push af
+	ld c, 8
+	jr WriteMonPartySpriteOAM.coord_x_fix
 
 UnusedPartyMonSpriteFunction:
 ; This function is unused and doesn't appear to do anything useful. It looks
@@ -248,6 +265,7 @@ WriteMonPartySpriteOAM:
 ; make a copy at wMonPartySpritesSavedOAM.
 	push af
 	ld c, $10
+.coord_x_fix
 	ld h, HIGH(wShadowOAM)
 	ldh a, [hPartyMonIndex]
 	swap a

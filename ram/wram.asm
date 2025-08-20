@@ -1097,6 +1097,8 @@ NEXTU
 wNamingScreenNameLength:: db
 ; non-zero when the player has chosen to submit the name
 wNamingScreenSubmitName:: db
+;new: 0：拼音 1:符号 
+; orig
 ; 0 = upper case
 ; 1 = lower case
 wAlphabetCase:: db
@@ -2582,6 +2584,61 @@ wBoxMonNicksEnd::
 
 wBoxDataEnd::
 
+wDFSCode:: ds 4
+wDFSFontSytle:: ds 1
+wDFSV0Only:: ds 1
+wDFSStack:: ds 1
+wDFSCombineCode:: ds 2
+
+wIMEPinyin:: ds 7
+; wIMEChar:: ds 2
+; wIMEBank:: ds 1
+wIMEAddr:: ds 2
+;new: 0：拼音 1:符号 
+; orig
+; 0 = upper case
+; 1 = lower case
+wIMEAlphabetCase:: db
+wIMETmpVar:: ds 2
+wIMETmpVarEnding:: ds 1
+wIMECurrentPage:: ds 1
+wIMEMaxPage:: ds 1
+wIMEOddEven:: ds 1
+wIMEBuffer:: ds 2
+wIMEBuffer2:: ds 2
+wIMEBuffer3:: ds 2
+wIMEBuffer4:: ds 2
+wIMEBuffer5:: ds 2
+wIMEBuffer6:: ds 2
+wIMEBuffer7:: ds 2
+wIMEBuffer8:: ds 2
+wIMEBuffer9:: ds 2
+wIMEBuffer10:: ds 2
+wIMEBuffer11:: ds 2
+wIMEBuffer12:: ds 2
+wIMEBufferEND:: ds 1
+
+wTempTopMenuItemX:: ds 1
+wBuffer2:: ds 6
+
+; wd47a:: ds 1 ; d479
+; wc0f3:: ds 1
+wc0f4:: ds 1
+; wc0f5:: ds 11
+wBillPCTilemapMark:: ds 1
+wBillPCEnteredViewStats:: ds 1
+ds 24	 
+
+wIfPartyMenuOpenedDuringBattle:: ds 1
+wTempSpace:: ds 1
+wIfDexSeen:: ds 1
+wPartyIndex:: ds 1
+wCanLearnMark:: ds 1
+wCannotLearnMark:: ds 1
+wMarkPrinter:: ds 1
+wTempSpace2:: ds 1
+wENGNameMark::ds 1
+wColorPalette::ds 1
 
 SECTION "GBC Palette Data", WRAM0
 
@@ -2597,5 +2654,5 @@ wBGPPalsBuffer:: ds NUM_ACTIVE_PALS * PALETTE_SIZE
 SECTION "Stack", WRAM0
 
 ; the stack grows downward
-	ds $eb - 1
+	; ds $eb - 1
 wStack:: db
