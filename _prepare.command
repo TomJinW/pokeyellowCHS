@@ -4,7 +4,7 @@ cd "$filepath"
 # mkdir tmp
 
 echo Creating build directory...
-rm -r buildYUS
+# rm -r buildYUS
 mkdir buildYUS
 cp -r src/* buildYUS
 cd buildYUS
