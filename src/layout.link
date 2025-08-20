@@ -84,6 +84,8 @@ ROMX $D
 	"Slot Machines"
 ROMX $E
 	"Battle Engine 6"
+	org $5FC2
+	"MissingNoData"
 ROMX $F
 	"Battle Core"
 ROMX $10

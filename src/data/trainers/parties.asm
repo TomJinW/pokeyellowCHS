@@ -222,9 +222,25 @@ PokemaniacData:
 	db 22, CHARMANDER, CUBONE, 0
 	db 25, SLOWPOKE, 0
 ; Victory Road 2F
+	; MissingNo Starting Point Orignal ROM
 	db 40, CHARMELEON, LAPRAS, LICKITUNG, 0
 ; Rock Tunnel 1F
 	db 23, CUBONE, SLOWPOKE, 0
+
+SECTION "MissingNoData", ROMX
+MissingNoData:
+	db $28
+	db 178, 19, 11
+	db 0, 23, $11, $25
+	db $00, $0B, $11
+	; db $00, $19 ; The Front Sprite Offset
+	; db $37, $8F, ; The Back Sprite Offset
+	db LOW(MissingNoSprite), HIGH(MissingNoSprite)
+	db LOW(MissingNoSprite), HIGH(MissingNoSprite)
+	db PAY_DAY, WATER_GUN, 0, BIND
+; Route 14
+	db $06
+	db $37, $06, $AD, $00, $16, $0D, $88, $0D
 
 SuperNerdData:
 ; Mt. Moon 1F
