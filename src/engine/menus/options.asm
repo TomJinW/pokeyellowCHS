@@ -37,7 +37,7 @@ OptionMenuJumpTable:
 	dw OptionsMenu_SpeakerSettings
 	dw OptionsMenu_GBPrinterBrightness
 	dw OptionsMenu_PMNames
-	dw OptionsMenu_Dummy ; dw OptionsMenu_Color ;色彩更替函数
+	dw OptionsMenu_Color ;色彩更替函数
 	dw OptionsMenu_Cancel
 
 OptionsMenu_TextSpeed:
@@ -375,17 +375,18 @@ OptionsMenu_PMNames:
 	ret
 
 PalettesPointerTable:
-	dw USAText
 	dw JPNText
 	dw BWText
+	dw USAText
 	
-
-USAText:
-	db "USA@"
 JPNText:
 	db "JPN@"
 BWText:
 	db "BW @"
+USAText:
+	db "USA@"
+
+
 
 
 OptionsMenu_Color:
@@ -414,7 +415,7 @@ OptionsMenu_Color:
 .CHANGEDEIGHT
 	ld a, [wColorPalette]
 	add 1
-	cp 2
+	cp 3
 	jr c, .noRoundingR
 	ld a, 0
 .noRoundingR
@@ -460,7 +461,7 @@ OptionsControl:
 	scf
 	ret
 .doNotWrapAround
-	cp $5 ;cp $6 ;cp $4
+	cp $6 ;cp $6 ;cp $4
 	jr c, .regularIncrement
 	ld [hl], $6
 .regularIncrement
@@ -526,7 +527,7 @@ InitOptionsMenu:
 	call PlaceString
 	xor a
 	ld [wOptionsCursorLocation], a
-	ld c, 6 ;ld c, 7 ;ld c, 5 ; the number of options to loop through
+	ld c, 7;ld c, 7 ;ld c, 5 ; the number of options to loop through
 .loop
 	push bc
 	call GetOptionPointer ; updates the next option
@@ -557,7 +558,7 @@ AllOptionsText:
 	next "SOUND:@"
 AllOptionsText2:
 	next "PRINT:"
-	next "PM NAMES:@"
+	next "PM NAMES:"
 	next "COLOR:@"
 
 AllOptionsTextDMG:

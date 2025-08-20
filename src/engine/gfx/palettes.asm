@@ -781,9 +781,9 @@ GetPalette:
 	push bc
 	ld c, a
 	ld a,[wColorPalette]
+	cp 0
+	jr z, .JPN
 	cp 1
-	jr z, .BW
-	cp 2
 	jr z, .BW
 	ld a, c
 	pop bc
@@ -800,7 +800,7 @@ GetPalette:
 GetGBCBasePalAddress::
 ; Input: a = palette ID
 ; Output: de = palette address
-	; call GetPalette
+	call GetPalette
 	push hl
 	ld l, a
 	xor a
