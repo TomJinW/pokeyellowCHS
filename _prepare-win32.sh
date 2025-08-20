@@ -4,10 +4,10 @@ cd "$filepath"
 # mkdir tmp
 
 echo Creating build directory...
-rm -r buildYUS
-mkdir buildYUS
-cp -r src/* buildYUS
-cd buildYUS
+rm -r buildYJP
+mkdir buildYJP
+cp -r src/* buildYJP
+cd buildYJP
 
 # cd /Users/tom/Library/CloudStorage/OneDrive-Personal/Office/pokeyellowCHS
 # cp buildingsA.xlsx $filepath/xlsx/buildingsA.xlsx
@@ -36,17 +36,17 @@ then
     echo The Option is not set, using the default one.
     option=1
 fi
-python3 tools/_importText.py xlsx/outdoor.xlsx 5 YEUS $option
-python3 tools/_importText2.py xlsx/dex.xlsx 5 YEUS $option
-python3 tools/_importText.py xlsx/buildingsA.xlsx 5 YEUS $option
-python3 tools/_importText.py xlsx/buildingsB.xlsx 5 YEUS $option
-python3 tools/_importText.py xlsx/indoor.xlsx 5 YEUS $option
-python3 tools/_importText.py xlsx/routes.xlsx 5 YEUS $option
-python3 tools/_importText.py xlsx/core.xlsx 5 YEUS $option
-python3 tools/_importText.py xlsx/ratings.xlsx 5 YEUS $option
+python3 tools/_importText.py xlsx/outdoor.xlsx 5 YEJP $option
+python3 tools/_importText2.py xlsx/dex.xlsx 5 YEJP $option
+python3 tools/_importText.py xlsx/buildingsA.xlsx 5 YEJP $option
+python3 tools/_importText.py xlsx/buildingsB.xlsx 5 YEJP $option
+python3 tools/_importText.py xlsx/indoor.xlsx 5 YEJP $option
+python3 tools/_importText.py xlsx/routes.xlsx 5 YEJP $option
+python3 tools/_importText.py xlsx/core.xlsx 5 YEJP $option
+python3 tools/_importText.py xlsx/ratings.xlsx 5 YEJP $option
 
-python3 tools/_importDexEntry.py xlsx/dexEntry.xlsx 13 1 $option YEUS
-python3 tools/_importTextData.py xlsx/data.xlsx 1 YEUS $option
+python3 tools/_importDexEntry.py xlsx/dexEntry.xlsx 13 1 $option YEJP
+python3 tools/_importTextData.py xlsx/data.xlsx 1 YEJP $option
 
 patch -p1 < tcc_winport.diff
 chmod +x _build.command
