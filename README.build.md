@@ -156,8 +156,8 @@
 - 可以直接在 buildYUS/buildYJP 文件夹里修改需要的部分并运行 make 来重新编译游戏，汉化版的修改已经应用于 buildYUS/buildYJP 文件夹，所以可以不需要再运行 _prepare.command：
 
 	```
-	cd buildRB # 宝可梦 黄
-	cd buildRGB # 精灵宝可梦 皮卡丘
+	cd buildYUS # 宝可梦 黄
+	cd buildYJP # 精灵宝可梦 皮卡丘
 	make
 	```
 
