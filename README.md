@@ -1,5 +1,6 @@
 # 宝可梦 Gen 1 黄 汉化版
 
+![avatar](Image.jpg)
 
 [pret/pokeyellow 原始 README.md](README.O.md)
 
