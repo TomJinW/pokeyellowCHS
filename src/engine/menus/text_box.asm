@@ -467,7 +467,7 @@ DisplayFieldMoveMonMenu:
 	jr z, .reachedName
 .skipNameLoop ; skip past current name
 	ld a, [hli]
-	cp "@"
+	cp CHARVAL("@")
 	jr nz, .skipNameLoop
 	jr .skipNamesLoop
 .reachedName

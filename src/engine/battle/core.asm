@@ -20,7 +20,7 @@ SlidePlayerAndEnemySilhouettesOnScreen:
 	ld hl, vBGMap0
 	ld bc, $400
 .clearBackgroundLoop
-	ld a, " "
+	ld a, CHARVAL(" ")
 	ld [hli], a
 	dec bc
 	ld a, b
@@ -2212,15 +2212,15 @@ DisplayBattleMenu::
 	call CopyData
 ; the following simulates the keystrokes by drawing menus on screen
 	hlcoord 9, 14
-	ld [hl], "▶"
+	ld [hl], CHARVAL("▶")
 	ld c, 20
 	call DelayFrames
-	ld [hl], " "
+	ld [hl], CHARVAL(" ")
 	hlcoord 9, 16
-	ld [hl], "▶"
+	ld [hl], CHARVAL("▶")
 	ld c, 20
 	call DelayFrames
-	ld [hl], "▷"
+	ld [hl], CHARVAL("▷")
 	ld a, $2 ; select the "ITEM" menu
 	jp .upperLeftMenuItemWasNotSelected
 .oldManName
@@ -2240,7 +2240,7 @@ DisplayBattleMenu::
 .leftColumn ; put cursor in left column of menu
 	ld a, [wBattleType]
 	cp BATTLE_TYPE_SAFARI
-	ld a, " "
+	ld a, CHARVAL(" ")
 	jr z, .safariLeftColumn
 ; put cursor in left column for normal battle menu (i.e. when it's not a Safari battle)
 	; ldcoord_a 15, 14
@@ -2276,7 +2276,7 @@ DisplayBattleMenu::
 .rightColumn ; put cursor in right column of menu
 	ld a, [wBattleType]
 	cp BATTLE_TYPE_SAFARI
-	ld a, " "
+	ld a, CHARVAL(" ")
 	jr z, .safariRightColumn
 ; put cursor in right column for normal battle menu (i.e. when it's not a Safari battle)
 	ldcoord_a 9, 14 ; clear upper cursor position in left column
@@ -2540,11 +2540,11 @@ PartyMenuOrRockOrRun:
 .partyMonDeselected
 	hlcoord 11, 10 ; CHS_Fix 06 // Revisit
 	ld bc, 9 ; CHS_Fix 06
-	ld a, " " ; CHS_Fix 06
+	ld a, CHARVAL(" ") ; CHS_Fix 06
 	call FillMemory ; CHS_Fix 06
 	hlcoord 11, 11
 	ld bc, 6 * SCREEN_WIDTH + 9
-	ld a, " "
+	ld a, CHARVAL(" ")
 	call FillMemory
 	xor a ; NORMAL_PARTY_MENU
 	ld [wPartyMenuTypeOrMessageID], a
@@ -2886,7 +2886,7 @@ SelectMenuItem:
 	dec a
 	ld bc, SCREEN_WIDTH * 2 ; ld bc, SCREEN_WIDTH
 	call AddNTimes
-	ld [hl], "▷"
+	ld [hl], CHARVAL("▷")
 .select
 	; ld hl, hUILayoutFlags
 	; set 1, [hl]
@@ -3240,9 +3240,9 @@ PrintMenuItem:
 	ld de, TypeText
 	call PlaceString
 	hlcoord 13, 16 ; hlcoord 7, 11
-	ld [hl], "/"
+	ld [hl], CHARVAL("/")
 	hlcoord 16, 13 ; hlcoord 5, 9
-	ld [hl], "/"
+	ld [hl], CHARVAL("/")
 	hlcoord 14, 13 ; hlcoord 5, 11
 	ld de, wcd6d
 	lb bc, 1, 2

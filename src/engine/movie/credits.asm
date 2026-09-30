@@ -172,7 +172,7 @@ FillFourRowsWithBlack:
 FillMiddleOfScreenWithWhite:
 	hlcoord 0, 4
 	ld bc, SCREEN_WIDTH * 10
-	ld a, " "
+	ld a, CHARVAL(" ")
 	jp FillMemory
 
 FillLeftHalfOfScreenWithWhite:
@@ -192,7 +192,7 @@ FillRightHalfOfScreenWithWhite:
 FillHalfOfScreenWithWhite:
 	ld b, 10
 	ld c, 10
-	ld a, " "
+	ld a, CHARVAL(" ")
 .loop
 	push bc
 	push hl

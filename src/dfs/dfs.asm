@@ -1256,7 +1256,7 @@ FixStrLength_Gen1::
 .checkchar
 ; end of nick?
 	ld a, [hli]
-	cp "@" ; terminator
+	cp CHARVAL("@") ; terminator
 	ret z
 	and a
 	jr z, .singlechar
@@ -1290,7 +1290,7 @@ endr
 	jr .checkchar
 .done
 	dec hl
-	ld [hl], "@"
+	ld [hl], CHARVAL("@")
 	ret
 
 ; Gen2:
@@ -1311,7 +1311,7 @@ GetStrLength_Gen1::
 .checkchar
 ; end of nick?
 	ld a, [hli]
-	cp "@" ; terminator
+	cp CHARVAL("@") ; terminator
 	jr z, .done
 	and a
 	jr z, .singlechar

@@ -76,17 +76,17 @@ InitWildBattle:
 	ld [hli], a   ; write front sprite pointer
 	ld [hl], b
 	ld hl, wEnemyMonNick  ; set name to "GHOST"
-	ld a, "G"
+	ld a, CHARVAL("G")
 	ld [hli], a
-	ld a, "H"
+	ld a, CHARVAL("H")
 	ld [hli], a
-	ld a, "O"
+	ld a, CHARVAL("O")
 	ld [hli], a
-	ld a, "S"
+	ld a, CHARVAL("S")
 	ld [hli], a
-	ld a, "T"
+	ld a, CHARVAL("T")
 	ld [hli], a
-	ld [hl], "@"
+	ld [hl], CHARVAL("@")
 	ld a, [wcf91]
 	push af
 	ld a, MON_GHOST
