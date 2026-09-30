@@ -777,7 +777,7 @@ FellText:
 
 PrintStatText:
 	ld hl, StatModTextStrings
-	ld c, "@"
+	ld c, CHARVAL("@")
 .findStatName_outer
 	dec b
 	jr z, .foundStatName

@@ -82,7 +82,7 @@ tools:
 	$(MAKE) -C tools/
 
 CHAR_FLAGS = 
-RGBASMFLAGS = -Q8 -P includes.asm -Weverything -Wno-obsolete -Wnumeric-string=2 -Wtruncation=1 $(CHAR_FLAGS)
+RGBASMFLAGS = -Q8 -P includes.asm -Weverything -Wnumeric-string=2 -Wtruncation=1 $(CHAR_FLAGS)
 # Create a sym/map for debug purposes if `make` run with `DEBUG=1`
 ifeq ($(DEBUG),1)
 RGBASMFLAGS += -E

@@ -33,7 +33,7 @@ Printer_GetMonStats:
 	hlcoord 2, 10
 	ld a, $6e
 	ld [hli], a
-	ld [hl], " "
+	ld [hl], CHARVAL(" ")
 
 	;Print HP Logo
 	ld a, [wENGNameMark]
@@ -72,7 +72,7 @@ Printer_GetMonStats:
 
 	predef IndexToPokedex
 	hlcoord 2, 8
-	ld [hl], "№"
+	ld [hl], CHARVAL("№")
 	inc hl
 	ld [hl], $f2
 	inc hl
@@ -82,10 +82,10 @@ Printer_GetMonStats:
 	
 	hlcoord $10, 2
 	ld a,[hl]
-	cp " "
+	cp CHARVAL(" ")
 	jr z, .normalNickname
 	hlcoord $F, 1
-	ld a, "<LV>" ; ":L" tile ID
+	ld a, CHARVAL("<LV>") ; ":L" tile ID
 	ld [hli], a
 	hlcoord $10, 1
 	call PrintLevelNoLV
@@ -94,7 +94,7 @@ Printer_GetMonStats:
 	; hlcoord 3, 10
 	; call PrintLevelFull 
 	hlcoord $10, 1
-	ld a, "<LV>" ; ":L" tile ID
+	ld a, CHARVAL("<LV>") ; ":L" tile ID
 	ld [hli], a
 	hlcoord $10, 2
 	call PrintLevelNoLV

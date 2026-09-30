@@ -489,7 +489,7 @@ OptionsMenu_UpdateCursorPosition:
 	ld de, SCREEN_WIDTH
 	ld c, 16
 .loop
-	ld [hl], " "
+	ld [hl], CHARVAL(" ")
 	add hl, de
 	dec c
 	jr nz, .loop
@@ -497,7 +497,7 @@ OptionsMenu_UpdateCursorPosition:
 	ld bc, SCREEN_WIDTH * 2
 	ld a, [wOptionsCursorLocation]
 	call AddNTimes
-	ld [hl], "▶"
+	ld [hl], CHARVAL("▶")
 	ret
 
 InitOptionsMenu:

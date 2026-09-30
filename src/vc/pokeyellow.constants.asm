@@ -5,51 +5,56 @@ MACRO vc_const
 	PRINTLN "00:{04x:x} \1" ; same format as rgblink's .sym file
 ENDM
 
+MACRO vc_char
+	DEF x = CHARVAL(\1)
+	PRINTLN "00:{04x:x} \1" ; same format as rgblink's .sym file
+ENDM
+
 ; [FPA 001 Begin]
-	vc_const "M"
-	vc_const "E"
-	vc_const "G"
-	vc_const "A"
-	vc_const "P"
-	vc_const "X"
-	vc_const "L"
-	vc_const "S"
-	vc_const "F"
+	vc_char "M"
+	vc_char "E"
+	vc_char "G"
+	vc_char "A"
+	vc_char "P"
+	vc_char "X"
+	vc_char "L"
+	vc_char "S"
+	vc_char "F"
 	vc_const MEGA_PUNCH
 
 ; [FPA 002 Begin]
-	vc_const "U"
-	vc_const "I"
+	vc_char "U"
+	vc_char "I"
 	vc_const GUILLOTINE
 
 ; [FPA 003 Begin]
-	vc_const "K"
+	vc_char "K"
 	vc_const MEGA_KICK
 
 ; [FPA 004 Begin]
-	vc_const "B"
-	vc_const "Z"
+	vc_char "B"
+	vc_char "Z"
 	vc_const BLIZZARD
 
 ; [FPA 005 Begin]
 	vc_const BUBBLEBEAM
 
 ; [FPA 006 Begin]
-	vc_const "H"
-	vc_const "Y"
+	vc_char "H"
+	vc_char "Y"
 	vc_const HYPER_BEAM
 
 ; [FPA 007 Begin]
-	vc_const "T"
-	vc_const "N"
+	vc_char "T"
+	vc_char "N"
 	vc_const THUNDERBOLT
 
 ; [FPA 008 Begin]
 	vc_const HAZE
 
 ; [FPA 009 Begin]
-	vc_const "R"
-	vc_const "F"
+	vc_char "R"
+	vc_char "F"
 	vc_const REFLECT
 
 ; [FPA 010 Begin]
