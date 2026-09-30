@@ -109,10 +109,10 @@ Func_f531b::
 	call Serial_SendZeroByte
 	dec b
 	jr nz, .loop
-	ld b, " "
-	ld c, " "
-	ld d, " "
-	ld e, "▷"
+	ld b, CHARVAL(" ")
+	ld c, CHARVAL(" ")
+	ld d, CHARVAL(" ")
+	ld e, CHARVAL("▷")
 	ld a, [wLinkMenuSelectionSendBuffer]
 	bit 3, a
 	jr nz, .asm_f541a
@@ -358,7 +358,7 @@ PetitCup::
 	ld hl, wcd6d
 .loop2
 	ld a, [hli]
-	cp "@"
+	cp CHARVAL("@")
 	jr nz, .loop2
 	ld a, [hli]
 	
@@ -750,10 +750,10 @@ LinkMenu:
 	ld a, START_TRANSFER_INTERNAL_CLOCK
 	ldh [rSC], a
 .skipStartingTransfer
-	ld b, " "
-	ld c, " "
-	ld d, " "
-	ld e, "▷"
+	ld b, CHARVAL(" ")
+	ld c, CHARVAL(" ")
+	ld d, CHARVAL(" ")
+	ld e, CHARVAL("▷")
 	ld a, [wLinkMenuSelectionSendBuffer]
 	and (B_BUTTON << 2) ; was B button pressed?
 	jr nz, .updateCursorPosition
@@ -825,10 +825,10 @@ LinkMenu:
 	ld a, [wd11e]
 	and a
 	jr nz, .asm_f5974
-	ld b, " "
-	ld c, " "
-	ld d, "▷"
-	ld e, " "
+	ld b, CHARVAL(" ")
+	ld c, CHARVAL(" ")
+	ld d, CHARVAL("▷")
+	ld e, CHARVAL(" ")
 	call Func_f59ec
 .asm_f5974
 	xor a
@@ -870,10 +870,10 @@ LinkMenu:
 	ld a, [wd11e]
 	and a
 	jr z, .asm_f59cd
-	ld b, " "
-	ld c, " "
-	ld d, " "
-	ld e, "▷"
+	ld b, CHARVAL(" ")
+	ld c, CHARVAL(" ")
+	ld d, CHARVAL(" ")
+	ld e, CHARVAL("▷")
 	call Func_f59ec
 	jp .choseCancel
 
@@ -883,10 +883,10 @@ LinkMenu:
 	jp .choseCancel
 
 .asm_f59d6
-	ld b, " "
-	ld c, " "
-	ld d, "▷"
-	ld e, " "
+	ld b, CHARVAL(" ")
+	ld c, CHARVAL(" ")
+	ld d, CHARVAL("▷")
+	ld e, CHARVAL(" ")
 	call Func_f59ec
 	call Func_f531b
 	jp c, .choseCancel

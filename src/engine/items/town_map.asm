@@ -190,7 +190,7 @@ LoadTownMap_Fly::
 	ld hl, wFlyLocationsList
 	decoord 10, 0;decoord 18, 0
 .townMapFlyLoop
-	ld a, " "
+	ld a, CHARVAL(" ")
 	ld [de], a
 	push hl
 	push hl
@@ -211,10 +211,10 @@ LoadTownMap_Fly::
 	call DelayFrames
 	; hlcoord 18, 0
 	hlcoord 10, 0
-	ld [hl], "▶"
+	ld [hl], CHARVAL("▶")
 	; hlcoord 19, 0
 	hlcoord 10, 1
-	ld [hl], "▼"
+	ld [hl], CHARVAL("▼")
 	pop hl
 .inputLoop
 	push hl
@@ -393,7 +393,7 @@ DrawPlayerOrBirdSprite:
 	ld a, [hli]
 	ld [de], a
 	inc de
-	cp "@"
+	cp CHARVAL("@")
 	jr nz, .loop
 	ld hl, wShadowOAM
 	ld de, wTileMapBackup

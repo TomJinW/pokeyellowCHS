@@ -97,10 +97,10 @@ RedrawPartyMenu_::
 	dec hl
 	ld de, .FullSpaceText
 	call PlaceString
-	ld [hl], " "
+	ld [hl], CHARVAL(" ")
 	ld bc, -SCREEN_WIDTH
 	add hl, bc
-	ld [hl], " "
+	ld [hl], CHARVAL(" ")
 	pop de
 
 	pop hl
@@ -135,7 +135,7 @@ RedrawPartyMenu_::
 	dec hl
 	dec hl
 	dec hl
-	ld a, "▷" ; unfilled right arrow menu cursor
+	ld a, CHARVAL("▷") ; unfilled right arrow menu cursor
 	ld [hli], a ; place the cursor
 	inc hl
 	inc hl
@@ -435,4 +435,3 @@ GetShortHealthBarColor::
 .gotColor
 	ld [hl], d
 	ret
-	
